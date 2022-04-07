@@ -1,10 +1,12 @@
-import React from "react";
-import { AppProps } from "next/app";
-import "tailwindcss/tailwind.css";
-import "@styles/global.css";
+import React from "react"
+import { AppProps } from "next/app"
+import "@styles/global.css"
+import "@fontsource/poppins/400.css"
+import "@fontsource/poppins/500.css"
+import "@fontsource/poppins/600.css"
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-    return <Component {...pageProps} />;
+  return <Component {...pageProps} />
 }
 
-export default MyApp;
+export default MyApp
