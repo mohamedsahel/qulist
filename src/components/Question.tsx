@@ -1,101 +1,313 @@
 import { VscChromeClose } from "react-icons/vsc"
+import { AiFillDelete } from "react-icons/ai"
+import { GrCheckmark } from "react-icons/gr"
+import { MdModeEdit } from "react-icons/md"
 import classnames from "classnames"
-import { QuestionType } from "src/store"
-import { useState } from "react"
+import { QuestionType, useStore } from "src/store"
+import { useEffect, useState } from "react"
 import "katex/dist/katex.min.css"
 import Latex from "react-latex-next"
+import ContentEditable from "react-contenteditable"
 
 type QuestionProps = {
   question: QuestionType
+  index?: number
 }
 
-const questionTypes = ["mutliple", "boolean", "text"]
+const questionTypes = ["multiple", "boolean", "text"]
 
-export default function Question({ question }: QuestionProps): JSX.Element {
+export default function Question({
+  question,
+  index,
+}: QuestionProps): JSX.Element {
+  const [updateQuestion, removeQuestion] = useStore((state) => [
+    state.updateQuestion,
+    state.removeQuestion,
+  ])
+
+  const updateType = (type: any) => {
+    updateQuestion(question.id, { ...question, type })
+  }
+
+  const updateText = (text: string) => {
+    updateQuestion(question.id, { ...question, question: text })
+  }
+
+  const toggleQuestion = () => {
+    updateQuestion(question.id, { ...question, closed: !question.closed })
+  }
+
+  const updateOption = (option: any) => {
+    updateQuestion(question.id, {
+      ...question,
+      options: question.options?.map((o) => (o.id === option.id ? option : o)),
+    })
+  }
+
+  const updateAndAddOption = (option: any) => {
+    const newOption = {
+      id: Math.random(),
+      value: "",
+      correct: false,
+    }
+
+    updateQuestion(question.id, {
+      ...question,
+      options: [
+        ...(question.options?.map((o) => (o.id === option.id ? option : o)) ||
+          []),
+        newOption,
+      ],
+    })
+  }
+
+  const removeOption = (optionId: number) => {
+    updateQuestion(question.id, {
+      ...question,
+      options: [...(question.options?.filter((o) => o.id !== optionId) || [])],
+    })
+  }
+
+  const updateBoolean = (value: boolean) => {
+    updateQuestion(question.id, { ...question, true: value })
+  }
+
+  const updateLines = (lines: number) => {
+    updateQuestion(question.id, { ...question, lines })
+  }
+
+  const updateBareme = (bareme: number) => {
+    updateQuestion(question.id, { ...question, bareme })
+  }
+
   return (
-    <div className="bg-white px-5 py-4 pt-9 rounded-sm relative">
-      <span className="label font-medium text-lg absolute -top-6 bg-gray-100 px-4 rounded-full">
-        Question {question.id}
-      </span>
-      <div className="flex justify-between items-center">
-        <select
-          className="select select-bordered select-sm text-base w-32"
-          title="Question type"
+    <div
+      className={classnames(
+        "bg-white px-5 py-4 pt-9 mt-12 rounded-lg relative",
+        question.closed ? "shadow-sm" : "shadow-lg",
+      )}
+    >
+      <div className="absolute -top-6 inset-x-4 flex justify-start">
+        <span className="label mr-auto font-medium text-lg  bg-yellow-200 px-4 rounded-full">
+          Question {index}
+        </span>
+        <span
+          className="label font-medium text-lg text-gray-700  bg-yellow-200 px-4 rounded-full hover:bg-white border-4 border-yellow-200 cursor-pointer "
+          onClick={() => removeQuestion(question.id)}
         >
-          {questionTypes.map((questionType) => (
-            <option
-              key={questionType}
-              value={questionType}
-              selected={questionType === question.type}
-            >
-              {questionType}
-            </option>
-          ))}
-        </select>
-
-        <div className="form-control flex-row items-center w-full max-w-xs">
-          <label className="label">Bareme</label>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-sm input-bordered w-full max-w-xs"
-          />
-        </div>
+          <AiFillDelete />
+        </span>
+        <span
+          className="label ml-3 font-medium text-lg text-gray-700  bg-yellow-200 px-4 rounded-full hover:bg-white border-4 border-yellow-200 cursor-pointer"
+          onClick={() => toggleQuestion()}
+        >
+          {question.closed ? <MdModeEdit /> : <GrCheckmark />}
+        </span>
       </div>
-      {/* <div className="divider mt-2 mb-1" /> */}
-      <div className="mt-6">
-        <div className="form-control  w-full">
-          <div
-            className="bg-gray-50 p-3 pt-2 mb-4 border-b-2 focus:border-primary outline-none"
-            contentEditable
-            onInput={(e) => console.log(e.currentTarget.textContent as string)}
-          >
-            La question 2
-          </div>
-        </div>
 
-        {question.type === "multiple" &&
-          question.options?.map((option, index) => (
-            <div className="flex items-center">
-              <div
-                className="form-control flex-row items-center w-full  bg-white py-1  rounded-md"
-                key={index}
-              >
+      {question.closed ? (
+        <QuestionPreview question={question} index={index} />
+      ) : (
+        <>
+          <div className="absolute inset-y-0 left-0 w-[0.4rem] bg-primary rounded-l-full " />
+          <div className="flex justify-between items-center pl-1">
+            <select
+              className="select select-bordered select-sm font-normal text-base w-32"
+              title="Question type"
+              onChange={(e) => {
+                updateType(e.target.value)
+              }}
+            >
+              {questionTypes.map((questionType) => (
+                <option
+                  key={questionType}
+                  value={questionType}
+                  selected={questionType === question.type}
+                >
+                  {questionType}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              placeholder="Bareme"
+              className="input input-sm input-bordered max-w-xs"
+              onChange={(e) => updateBareme(parseInt(e.target.value))}
+              defaultValue={question.bareme}
+            />
+          </div>
+          <div className="mt-6 pl-1">
+            <div className="form-control  w-full">
+              <ContentEditable
+                className="bg-gray-50 p-3 pt-2 mb-4 border-b-2 focus:border-primary outline-none"
+                html={question.question}
+                disabled={false}
+                onChange={(e) => {
+                  updateText(e.target.value)
+                }}
+                tagName="div"
+              />
+            </div>
+
+            {question.type === "multiple" &&
+              question.options?.map((option, index) => {
+                const last = index === question.options?.length! - 1
+
+                return (
+                  <div className="flex items-center my-1" key={option.id}>
+                    <div
+                      className="form-control flex-row items-center w-full  bg-white py-1  rounded-md"
+                      key={index}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={last ? false : option.correct}
+                        className="checkbox checkbox-accent checkbox-xs rounded-sm"
+                        title="Correct"
+                        onChange={(e) =>
+                          updateOption({ ...option, correct: e.target.checked })
+                        }
+                      />
+                      <input
+                        id={`${question.id}-option-${option.id}`}
+                        type="text"
+                        placeholder={`Option ${index + 1}`}
+                        defaultValue={option.value}
+                        onChange={(e) => {
+                          const updateFun = last
+                            ? updateAndAddOption
+                            : updateOption
+                          updateFun({ ...option, value: e.target.value })
+                        }}
+                        className="input input-sm text-base w-full  focus:outline-none"
+                      />
+                    </div>
+                    {!last && (
+                      <button
+                        className="btn btn-circle btn-ghost hover:bg-gray-200 btn-sm border-none ml-2"
+                        title="remove"
+                        onClick={() => removeOption(option.id)}
+                      >
+                        <VscChromeClose className="w-5 h-5 text-gray-600" />
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+
+            {question.type === "boolean" && (
+              <div>
+                <div className="form-control flex-row items-center">
+                  <input
+                    type="radio"
+                    name="true"
+                    className="radio checked:bg-accent-500"
+                    checked={question.true}
+                    onChange={() => updateBoolean(true)}
+                    title="true"
+                  />
+                  <label className="label cursor-pointer ml-2">Vrai</label>
+                </div>
+                <div className="form-control flex-row items-center">
+                  <input
+                    type="radio"
+                    name="false"
+                    className="radio"
+                    title="false"
+                    onChange={() => updateBoolean(false)}
+                    checked={!question.true}
+                  />
+                  <label className="label cursor-pointer ml-2">Faux</label>
+                </div>
+              </div>
+            )}
+
+            {question.type === "text" && (
+              <div className="form-control">
+                <label className="label">Lines</label>
                 <input
-                  type="checkbox"
-                  // checked={option.correct}
-                  className="checkbox checkbox-accent checkbox-xs rounded-sm"
-                  title="Correct"
-                />
-                <input
-                  type="text"
-                  placeholder={`Option ${index + 1}`}
-                  className="input input-sm text-base w-full  focus:outline-none"
+                  type="number"
+                  placeholder="3"
+                  className="input input-bordered w-32"
+                  defaultValue={question.lines}
+                  onChange={(e) => updateLines(parseInt(e.target.value))}
                 />
               </div>
-              <button
-                className="btn btn-circle btn-ghost btn-sm border-none ml-2"
-                title="remove"
-              >
-                <VscChromeClose className="w-5 h-5" />
-              </button>
-            </div>
-          ))}
-      </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   )
 }
 
-const QuestionField = ({ className, onChange }: any) => {
-  const [latex, setLatex] = useState(
-    "We give illustrations for the three processes $e^+e^-$, gluon-gluon and $\\gamma\\gamma \\to W t\\bar b$.",
-  )
-
+function QuestionPreview({ question }: QuestionProps): JSX.Element {
   return (
-    <div
-      className="bg-white p-3 pt-2 border-b outline-none"
-      // contentEditable
-      onInput={(e) => setLatex(e.currentTarget.textContent as string)}
-    />
+    <div>
+      <h3 className="text-lg mt-2 mb-3">
+        <Latex>{question.question}</Latex>
+      </h3>
+
+      {question.type === "multiple" &&
+        question.options
+          ?.filter((o: any) => o.value.length)
+          .map((option: any, index: number) => {
+            const last = index === question.options?.length! - 1
+
+            return (
+              <div className="flex items-center my-1" key={option.id}>
+                <div
+                  className="form-control flex-row items-center w-full  bg-white py-1 my-1  rounded-md"
+                  key={index}
+                >
+                  <input
+                    type="checkbox"
+                    checked={last ? false : option.correct}
+                    className="checkbox checkbox-accent checkbox-xs rounded-sm"
+                    title="Correct"
+                  />
+
+                  <p className="pl-3">
+                    <Latex>{option.value}</Latex>
+                  </p>
+                </div>
+              </div>
+            )
+          })}
+
+      {question.type === "boolean" && (
+        <div>
+          <div className="form-control flex-row items-center">
+            <input
+              type="radio"
+              name="true"
+              className="radio checked:bg-accent-500"
+              checked={question.true}
+              title="true"
+            />
+            <label className="label cursor-pointer ml-2">Vrai</label>
+          </div>
+          <div className="form-control flex-row items-center">
+            <input
+              type="radio"
+              name="false"
+              className="radio"
+              title="false"
+              checked={!question.true}
+            />
+            <label className="label cursor-pointer ml-2">Faux</label>
+          </div>
+        </div>
+      )}
+
+      {question.type === "text" && (
+        <div>
+          <p className="">
+            Lines: <span className="font-bold">{question.lines}</span>
+          </p>
+        </div>
+      )}
+    </div>
   )
 }

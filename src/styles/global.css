@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  @apply transition-all;
+}
+
 body {
   font-family: "Poppins", sans-serif;
 }
@@ -17,4 +21,12 @@ body {
 
 .container {
   @apply mx-auto flex-col max-w-screen-md items-center justify-center;
+}
+
+.select {
+  @apply rounded-full focus:outline-none;
+}
+
+.input {
+  @apply rounded-md focus:outline-none;
 }

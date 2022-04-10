@@ -4,7 +4,7 @@ import Question from "./Question"
 type MetaProps = {}
 
 export default function Meta({}: MetaProps): JSX.Element {
-  const meta = useStore((state) => state.meta)
+  const [meta, updateMeta] = useStore((state) => [state.meta, state.updateMeta])
 
   return (
     <div>
@@ -15,10 +15,12 @@ export default function Meta({}: MetaProps): JSX.Element {
           defaultValue={meta.title}
           title="title"
           placeholder="Titre Ici"
+          onChange={(e) => updateMeta({ ...meta, title: e.target.value })}
         />
         <select
-          className="select select-bordered select-base text-base w-20"
+          className="select bg-primary text-white text-base w-20 min-h-[2.5rem] h-[2.5rem]"
           title="Format"
+          onChange={(e) => updateMeta({ ...meta, format: e.target.value })}
         >
           {["A4", "A3"].map((format) => (
             <option
@@ -37,8 +39,9 @@ export default function Meta({}: MetaProps): JSX.Element {
           <input
             type="text"
             placeholder="Type here"
-            className="input input-sm input-bordered w-full"
+            className="input input-base input-bordered h-10  w-full"
             defaultValue={meta.module}
+            onChange={(e) => updateMeta({ ...meta, module: e.target.value })}
           />
         </div>
         <div className="form-control flex-row items-center w-full">
@@ -46,8 +49,9 @@ export default function Meta({}: MetaProps): JSX.Element {
           <input
             type="text"
             placeholder="Type here"
-            className="input input-sm input-bordered w-full"
+            className="input input-base input-bordered h-10  w-full"
             defaultValue={meta.semestre}
+            onChange={(e) => updateMeta({ ...meta, semestre: e.target.value })}
           />
         </div>
         <div className="form-control flex-row items-center w-full">
@@ -55,8 +59,9 @@ export default function Meta({}: MetaProps): JSX.Element {
           <input
             type="text"
             placeholder="Type here"
-            className="input input-sm input-bordered w-full"
+            className="input input-base input-bordered h-10  w-full"
             defaultValue={meta.year}
+            onChange={(e) => updateMeta({ ...meta, year: e.target.value })}
           />
         </div>
       </div>
