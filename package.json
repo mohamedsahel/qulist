@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 5000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint '**/*.{js,jsx,ts,tsx}'",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@fontsource/poppins": "^4.5.5",
+    "@headlessui/react": "^1.5.0",
     "add": "^2.0.6",
     "classnames": "^2.3.1",
     "daisyui": "^2.13.6",

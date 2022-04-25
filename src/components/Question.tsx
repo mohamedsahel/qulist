@@ -40,7 +40,9 @@ export default function Question({
   const updateOption = (option: any) => {
     updateQuestion(question.id, {
       ...question,
-      options: question.options?.map((o) => (o.id === option.id ? option : o)),
+      options: question.options?.map((o) =>
+        o.id === option.id ? option : o,
+      ),
     })
   }
 
@@ -88,17 +90,17 @@ export default function Question({
       )}
     >
       <div className="absolute -top-6 inset-x-4 flex justify-start">
-        <span className="label mr-auto font-medium text-lg  bg-yellow-200 px-4 rounded-full">
+        <span className="label mr-auto font-medium text-lg  bg-gray-200 px-4 rounded-full">
           Question {index}
         </span>
         <span
-          className="label font-medium text-lg text-gray-700  bg-yellow-200 px-4 rounded-full hover:bg-white border-4 border-yellow-200 cursor-pointer "
+          className="label font-medium text-lg text-gray-700  bg-gray-200 px-4 rounded-full hover:bg-white border-4 border-gray-200 cursor-pointer "
           onClick={() => removeQuestion(question.id)}
         >
           <AiFillDelete />
         </span>
         <span
-          className="label ml-3 font-medium text-lg text-gray-700  bg-yellow-200 px-4 rounded-full hover:bg-white border-4 border-yellow-200 cursor-pointer"
+          className="label ml-3 font-medium text-lg text-gray-700  bg-gray-200 px-4 rounded-full hover:bg-white border-4 border-gray-200 cursor-pointer"
           onClick={() => toggleQuestion()}
         >
           {question.closed ? <MdModeEdit /> : <GrCheckmark />}
@@ -109,7 +111,7 @@ export default function Question({
         <QuestionPreview question={question} index={index} />
       ) : (
         <>
-          <div className="absolute inset-y-0 left-0 w-[0.4rem] bg-primary rounded-l-full " />
+          <div className="absolute inset-y-0 left-0 w-[0.4rem] bg-blue-500 rounded-l-full " />
           <div className="flex justify-between items-center pl-1">
             <select
               className="select select-bordered select-sm font-normal text-base w-32"
@@ -134,13 +136,13 @@ export default function Question({
               placeholder="Bareme"
               className="input input-sm input-bordered max-w-xs"
               onChange={(e) => updateBareme(parseInt(e.target.value))}
-              defaultValue={question.bareme}
+              value={question.bareme}
             />
           </div>
           <div className="mt-6 pl-1">
             <div className="form-control  w-full">
               <ContentEditable
-                className="bg-gray-50 p-3 pt-2 mb-4 border-b-2 focus:border-primary outline-none"
+                className="bg-gray-50 p-3 pt-2 mb-4 border-b-2 focus:border-blue-500 outline-none"
                 html={question.question}
                 disabled={false}
                 onChange={(e) => {
@@ -173,8 +175,9 @@ export default function Question({
                         id={`${question.id}-option-${option.id}`}
                         type="text"
                         placeholder={`Option ${index + 1}`}
-                        defaultValue={option.value}
+                        value={option.value}
                         onChange={(e) => {
+                          console.log("option", option)
                           const updateFun = last
                             ? updateAndAddOption
                             : updateOption
@@ -230,7 +233,7 @@ export default function Question({
                   type="number"
                   placeholder="3"
                   className="input input-bordered w-32"
-                  defaultValue={question.lines}
+                  value={question.lines}
                   onChange={(e) => updateLines(parseInt(e.target.value))}
                 />
               </div>
@@ -264,7 +267,7 @@ function QuestionPreview({ question }: QuestionProps): JSX.Element {
                   <input
                     type="checkbox"
                     checked={last ? false : option.correct}
-                    className="checkbox checkbox-accent checkbox-xs rounded-sm"
+                    className="checkbox checkbox-accent checkbox-xs rounded-sm cursor-default"
                     title="Correct"
                   />
 
@@ -282,7 +285,7 @@ function QuestionPreview({ question }: QuestionProps): JSX.Element {
             <input
               type="radio"
               name="true"
-              className="radio checked:bg-accent-500"
+              className="radio checked:bg-accent-500 cursor-default"
               checked={question.true}
               title="true"
             />
@@ -292,7 +295,7 @@ function QuestionPreview({ question }: QuestionProps): JSX.Element {
             <input
               type="radio"
               name="false"
-              className="radio"
+              className="radio cursor-default"
               title="false"
               checked={!question.true}
             />

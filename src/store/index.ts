@@ -1,7 +1,6 @@
 import create from "zustand"
 import { devtools, persist } from "zustand/middleware"
 
-
 export type QuestionType = {
   id: number
   type: "multiple" | "boolean" | "text"
@@ -18,17 +17,26 @@ export type QuestionType = {
 }
 
 const initial_meta = {
-  title: "The first Quizz",
-  module: "Algebre 1",
-  semestre: "S5",
-  year: "2019/2020",
-  format: "A4", // A3
+  module: "",
+  filiere: "",
+  departement: "",
+  session: "",
+  duree: "",
+  format: "", // A3
+  defaultBareme: "",
+}
+
+export type MetaType = typeof initial_meta
+
+type InitialStateType = {
+  meta: MetaType
+  questions: QuestionType[]
 }
 
 const initial_question: QuestionType = {
   id: 1,
   type: "multiple", // mutli, boolean, text
-  question: "Porqoui cette question est vide",
+  question: "",
   options: [
     {
       id: 1,
@@ -42,41 +50,46 @@ const initial_question: QuestionType = {
     },
   ],
   true: true,
-  bareme: "",
+  bareme: initial_meta.defaultBareme,
   lines: 3,
   closed: false,
 }
 
-const initial_state = {
+const initial_state: InitialStateType = {
   meta: initial_meta,
-  questions: [initial_question],
+  questions: [],
 }
+
 
 export const useStore = create(
   devtools(
     persist(
-      (set: any) => ({
+      (set: any, get) => ({
         ...initial_state,
         addQuestion: (question: QuestionType = initial_question) => {
-          const newQuestion = {
-            ...question,
-            id: Math.random(),
-          }
-          set((state: typeof initial_state) => ({
-            ...state,
-            questions: [...state.questions, newQuestion],
-          }))
+          set((state: any) => {
+            const newQuestion = {
+              ...question,
+              id: Math.random(),
+              bareme: (get() as any).meta.defaultBareme,
+            }
+
+            return {
+              ...state,
+              questions: [...state.questions, newQuestion],
+            }
+          })
         },
         removeQuestion: (id: number) => {
           set((state: typeof initial_state) => ({
             ...state,
-            questions: state.questions.filter((q) => q.id !== id),
+            questions: state.questions.filter((q: QuestionType) => q.id !== id),
           }))
         },
         updateQuestion: (id: number, question: QuestionType) => {
           set((state: typeof initial_state) => ({
             ...state,
-            questions: state.questions.map((q) =>
+            questions: state.questions.map((q: QuestionType) =>
               q.id === id ? { ...q, ...question } : q,
             ),
           }))
