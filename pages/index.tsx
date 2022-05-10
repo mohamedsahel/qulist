@@ -27,7 +27,7 @@ const Home: React.FC = () => {
 
   return (
     <div
-      className="bg-gray-200 min-h-screen pt-20 pb-32 px-5"
+      className="bg-gray-200 min-h-screen pt-20 pb-32 px-3 md:px-5"
       spellCheck="false"
     >
       <div className="container ">

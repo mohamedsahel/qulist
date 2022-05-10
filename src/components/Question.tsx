@@ -90,17 +90,17 @@ export default function Question({
       )}
     >
       <div className="absolute -top-6 inset-x-4 flex justify-start">
-        <span className="label mr-auto font-medium text-lg  bg-gray-200 px-4 rounded-full">
+        <span className="label mr-auto font-medium md:text-lg  bg-gray-200 px-3 md:px-4 rounded-full">
           Question {index}
         </span>
         <span
-          className="label font-medium text-lg text-gray-700  bg-gray-200 px-4 rounded-full hover:bg-white border-4 border-gray-200 cursor-pointer "
+          className="label font-medium md:text-lg text-gray-700  bg-gray-200 px-3 md:px-4 rounded-full hover:bg-white border-4 border-gray-200 cursor-pointer "
           onClick={() => removeQuestion(question.id)}
         >
           <AiFillDelete />
         </span>
         <span
-          className="label ml-3 font-medium text-lg text-gray-700  bg-gray-200 px-4 rounded-full hover:bg-white border-4 border-gray-200 cursor-pointer"
+          className="label ml-3 font-medium md:text-lg text-gray-700  bg-gray-200 px-3 md:px-4 rounded-full hover:bg-white border-4 border-gray-200 cursor-pointer"
           onClick={() => toggleQuestion()}
         >
           {question.closed ? <MdModeEdit /> : <GrCheckmark />}
@@ -114,7 +114,7 @@ export default function Question({
           <div className="absolute inset-y-0 left-0 w-[0.4rem] bg-blue-500 rounded-l-full " />
           <div className="flex justify-between items-center pl-1">
             <select
-              className="select select-bordered select-sm font-normal text-base w-32"
+              className="select select-bordered select-sm font-normal text-base "
               title="Question type"
               onChange={(e) => {
                 updateType(e.target.value)
@@ -134,7 +134,7 @@ export default function Question({
             <input
               type="text"
               placeholder="Bareme"
-              className="input input-sm input-bordered max-w-xs"
+              className="input input-sm input-bordered max-w-[40%]"
               onChange={(e) => updateBareme(parseInt(e.target.value))}
               value={question.bareme}
             />
