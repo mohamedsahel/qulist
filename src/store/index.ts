@@ -1,115 +1,178 @@
-import create from "zustand"
-import { devtools, persist } from "zustand/middleware"
+import create, { GetState, SetState } from 'zustand'
+import { devtools, persist } from 'zustand/middleware'
+import shortid from 'shortid'
+import produce from 'immer'
 
-export type QuestionType = {
-  id: number
-  type: "multiple" | "boolean" | "text"
+export const FILIERES_LIST = ['SMIA', 'SMPC', 'GLNT'] as const
+
+export const DEPARTEMENT_LIST = [
+  'Informatique',
+  'Physique',
+  'Mathématiques',
+] as const
+
+export const FORMAT_LIST = ['A3', 'A4'] as const
+
+export type BaremeType = {
+  mouvaisChoix: number
+  bonneChoix: number
+}
+
+export type OptionType = {
+  id: string
+  value: string
+  correct: boolean
+}
+
+export type ParentQuestionType<T> = {
+  id: string
+  type: T
   question: string
-  bareme: any
-  options?: {
-    id: number
-    value: string
-    correct: boolean
-  }[]
-  lines?: number
-  true?: boolean
-  closed: boolean
+  bareme: BaremeType
+  ui: {
+    closed: boolean
+  }
 }
 
-const initial_meta = {
-  module: "",
-  filiere: "",
-  departement: "",
-  session: "",
-  duree: "",
-  format: "", // A3
-  defaultBareme: "",
+export type MultipeChoixQuestionType =
+  ParentQuestionType<'multipe_choix'> & {
+    choix: {
+      id: number
+      value: string
+      correct: boolean
+    }[]
+    alignementDeChoix: 'vertical' | 'horizontal' | 'caree'
+  }
+
+export type VraisFauxQuestionType =
+  ParentQuestionType<'vrais_faux'> & {
+    vrais: boolean
+    alignementDeChoix: 'vertical' | 'horizontal'
+  }
+
+export type LongQuestionType = ParentQuestionType<'long'> & {
+  lignes: number
 }
 
-export type MetaType = typeof initial_meta
+export type QuestionType =
+  | MultipeChoixQuestionType
+  | VraisFauxQuestionType
+  | LongQuestionType
 
-type InitialStateType = {
-  meta: MetaType
+export type ExamenType = {
+  id: string
+  module: string
+  filiere: typeof FILIERES_LIST[number]
+  departement: typeof DEPARTEMENT_LIST[number]
+  session: string
+  duree: string
+  format: typeof FORMAT_LIST[number]
+  baremeParDefaut: BaremeType
   questions: QuestionType[]
 }
 
-const initial_question: QuestionType = {
-  id: 1,
-  type: "multiple", // mutli, boolean, text
-  question: "",
-  options: [
-    {
-      id: 1,
-      value: "Option 1",
-      correct: false,
-    },
-    {
-      id: 2,
-      value: "",
-      correct: false,
-    },
-  ],
-  true: true,
-  bareme: initial_meta.defaultBareme,
-  lines: 3,
-  closed: false,
-}
-
-const initial_state: InitialStateType = {
-  meta: initial_meta,
+const attributes: ExamenType = {
+  id: shortid.generate(),
+  module: '',
+  filiere: FILIERES_LIST[0],
+  departement: DEPARTEMENT_LIST[0],
+  session: '',
+  duree: '',
+  format: FORMAT_LIST[0],
+  baremeParDefaut: {
+    mouvaisChoix: 0,
+    bonneChoix: 1,
+  },
   questions: [],
 }
 
+export type BDType = {
+  examens: ExamenType[]
+  editerExamen: (examenId: string, data: Partial<ExamenType>) => void
+  ajouterQuestion: (examenId: string, question: QuestionType) => void
+  supprimerQuestion: (examenId: string, questionId: string) => void
+  editerQuestion: (
+    examenId: string,
+    questionId: string,
+    data: Partial<QuestionType>
+  ) => void
+}
 
-export const useStore = create(
-  devtools(
-    persist(
-      (set: any, get) => ({
-        ...initial_state,
-        addQuestion: (question: QuestionType = initial_question) => {
-          set((state: any) => {
-            const newQuestion = {
-              ...question,
-              id: Math.random(),
-              bareme: (get() as any).meta.defaultBareme,
-            }
+export type MethodType<T> = (
+  set: SetState<BDType>,
+  get: GetState<BDType>
+) => T
 
-            return {
-              ...state,
-              questions: [...state.questions, newQuestion],
-            }
-          })
-        },
-        removeQuestion: (id: number) => {
-          set((state: typeof initial_state) => ({
-            ...state,
-            questions: state.questions.filter((q: QuestionType) => q.id !== id),
-          }))
-        },
-        updateQuestion: (id: number, question: QuestionType) => {
-          set((state: typeof initial_state) => ({
-            ...state,
-            questions: state.questions.map((q: QuestionType) =>
-              q.id === id ? { ...q, ...question } : q,
+export const editerExamen: MethodType<BDType['editerExamen']> =
+  (set) => (examenId, data) => {
+    set((state) => ({
+      ...state,
+      examens: state.examens.map((examen) =>
+        examen.id === examenId ? { ...examen, ...data } : examen
+      ),
+    }))
+  }
+
+export const ajouterQuestion: MethodType<BDType['ajouterQuestion']> =
+  (set) => (examenId, question) => {
+    set((state) => ({
+      ...state,
+      examens: state.examens.map((examen) =>
+        examen.id === examenId
+          ? { ...examen, questions: [...examen.questions, question] }
+          : examen
+      ),
+    }))
+  }
+
+export const supprimerQuestion: MethodType<
+  BDType['supprimerQuestion']
+> = (set) => (examenId, questionId) => {
+  set((state) => ({
+    ...state,
+    examens: state.examens.map((examen) =>
+      examen.id === examenId
+        ? {
+            ...examen,
+            questions: examen.questions.filter(
+              (question) => question.id !== questionId
             ),
-          }))
-        },
-        updateMeta: (meta: typeof initial_meta) => {
-          set((state: typeof initial_state) => ({
-            ...state,
-            meta: { ...state.meta, ...meta },
-          }))
-        },
-        setFocusedQuestion: (id: number) => {
-          set((state: typeof initial_state) => ({
-            ...state,
-            focused_question: id,
-          }))
-        },
-      }),
-      {
-        name: "amc-qcm-storage",
-      },
+          }
+        : examen
     ),
-  ),
+  }))
+}
+
+export const editerQuestion: MethodType<BDType['editerQuestion']> =
+  (set) => (examenId, questionId, data) => {
+    set((state) => ({
+      ...state,
+      examens: state.examens.map((examen) =>
+        examen.id === examenId
+          ? {
+              ...examen,
+              questions: examen.questions.map((question) =>
+                question.id === questionId
+                  ? ({ ...question, ...data } as QuestionType)
+                  : question
+              ),
+            }
+          : examen
+      ),
+    }))
+  }
+
+export const useBD = create<BDType>(
+  persist(
+    (set, get): BDType => ({
+      examens: [],
+      editerExamen: editerExamen(set, get),
+      ajouterQuestion: ajouterQuestion(set, get),
+      supprimerQuestion: supprimerQuestion(set, get),
+      editerQuestion: editerQuestion(set, get),
+    }),
+    {
+      name: 'amc-qcm-storage',
+    }
+  )
 )
