@@ -1,4 +1,4 @@
-import { MetaType, QuestionType } from "./store"
+import { MetaType, QuestionType } from "../db"
 
 export const generateLatex = (meta: MetaType, questions: QuestionType[]) => {
   return `\\documentclass[a3paper,landscape,10pt]{article}

@@ -1,4 +1,4 @@
-import { QuestionType, useStore } from 'src/store'
+import { QuestionType, useStore } from 'src/db'
 import Question from './Question'
 
 type MetaProps = {}

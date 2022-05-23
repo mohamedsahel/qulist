@@ -1,4 +1,4 @@
-import { useStore } from "src/store"
+import { useStore } from "src/db"
 import Question from "./Question"
 import { HiOutlinePlus } from "react-icons/hi"
 

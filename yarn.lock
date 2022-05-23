@@ -64,10 +64,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@fontsource/poppins@^4.5.5":
-  version "4.5.5"
-  resolved "https://registry.npmjs.org/@fontsource/poppins/-/poppins-4.5.5.tgz"
-  integrity sha512-fqRWOQDhfoJoxP98qwMQLvLcgOu13yib6rZjL5UqpurobIaWTweqzo95uOLOGBjEE0bMMAbfDMoFUTL8Byrdeg==
+"@fontsource/poppins@^4.5.8":
+  version "4.5.8"
+  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-4.5.8.tgz#65ce9b32f31bda5a25c23001bcebf1c66e440320"
+  integrity sha512-HE9yLDxYJEcxooVrYvvEhtyxaYU32hQIx1+npKegVefceE0l0zi0ePqKWWxYxkFpyy6WuZSQ+9rai3INnYKEJA==
 
 "@hapi/accept@5.0.2":
   version "5.0.2"
@@ -296,8 +296,8 @@ acorn@^7.0.0:
 
 add@^2.0.6:
   version "2.0.6"
-  resolved "https://registry.npmjs.org/add/-/add-2.0.6.tgz"
-  integrity sha1-JI8Kn25aUo7yKV2+7DBTITCuIjU=
+  resolved "https://registry.yarnpkg.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
+  integrity sha512-j5QzrmsokwWWp6kUcJQySpbG+xfOBqqKnup3OIk1pz+kB/80SLorZ9V8zHFLO92Lcd+hbvq8bT+zOGoPkmBV0Q==
 
 anser@1.4.9:
   version "1.4.9"
@@ -2661,7 +2661,7 @@ yaml@^1.10.0, yaml@^1.10.2:
 
 yarn@^1.22.18:
   version "1.22.18"
-  resolved "https://registry.npmjs.org/yarn/-/yarn-1.22.18.tgz"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.22.18.tgz#05b822ade8c672987bab8858635145da0850f78a"
   integrity sha512-oFffv6Jp2+BTUBItzx1Z0dpikTX+raRdqupfqzeMKnoh7WD6RuPAxcqDkMUy9vafJkrB0YaV708znpuMhEBKGQ==
 
 yocto-queue@^0.1.0:

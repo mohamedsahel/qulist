@@ -7,9 +7,9 @@ import { highlight, languages } from "prismjs/components/prism-core"
 import "prismjs/components/prism-clike"
 import "prismjs/components/prism-latex"
 import "prismjs/themes/prism-dark.css" //Example style, you can use another
-import { download } from "src/download"
-import { generateLatex } from "src/generate-latex"
-import { useStore } from "src/store"
+import { download } from "src/utils/download"
+import { generateLatex } from "src/utils/generate-latex"
+import { useStore } from "src/db"
 import { Tab } from "@headlessui/react"
 import classNames from "classnames"
 
