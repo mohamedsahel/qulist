@@ -84,7 +84,7 @@ const LatexEditorModal = ({ className }: { className: string }) => {
     <Modal
       button={
         <button className={classNames('rounded-lg bg-black bg-opacity-25 py-2 px-5 hover:bg-opacity-30 select-none text-white', className)}>
-          open
+          Math
         </button>
       }>
       {({ closeModal }: any) => (

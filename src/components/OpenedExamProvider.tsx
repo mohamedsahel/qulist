@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { createContext, ReactNode, useContext, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { useDB } from 'src/db'
 
 const OpenedExamContext = createContext<
@@ -22,6 +22,10 @@ function OpenedExamProvider({
   const { openedExam } = useDB((state) => ({
     openedExam: state.exams.find((e) => e.id === query.exam),
   }))
+
+  useEffect(() => {
+    setShowLatex(false)
+  }, [query])
 
 
   return (

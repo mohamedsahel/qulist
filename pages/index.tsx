@@ -31,16 +31,31 @@ export default function Home(): JSX.Element {
   return (
     <div>
       <Header />
-      <main className='inner-container grid md:grid-cols-2 gap-6 mt-24'>
-        {exams.map((exam, index) => (
-          <ExamCard
-            index={index}
-            key={exam.id}
-            exam={exam}
-            deleteExam={() => deleteExam(exam.id)}
-            isShowing
-          />
-        ))}
+      <main className='inner-container mt-24'>
+        {exams.length ? (
+          <div className='grid md:grid-cols-2 gap-6 '>
+            {exams.map((exam, index) => (
+              <ExamCard
+                index={index}
+                key={exam.id}
+                exam={exam}
+                deleteExam={() => deleteExam(exam.id)}
+                isShowing
+              />
+            ))}
+          </div>
+        ) : (
+          <div className='flex flex-col justify-center text-center text-white py-32'>
+            <p className='uppercase'>Good morning</p>
+            <h1 className='font-bold text-transparent text-5xl md:text-7xl bg-clip-text bg-gradient-to-r from-yellow-100 to-amber-500'>
+              No more pain <br /> no more headache
+            </h1>
+            <p className='mt-6 text-xl'>
+              The only tool you need to generate your next QMC Exam
+              Latex
+            </p>
+          </div>
+        )}
       </main>
     </div>
   )

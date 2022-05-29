@@ -42,11 +42,6 @@ export type QuestionType = {
 }
 
 
-// export type QuestionType =
-//   | MultipeChoicesQuestionType
-//   | TrueFalseQuestionType
-//   | LongQuestionType
-
 export type ExamType = {
   id: string
   module: typeof MODULE_LIST[number]
