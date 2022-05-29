@@ -1,7 +1,7 @@
-import { MetaType, QuestionType } from "../db"
+import { ExamType, QuestionType } from 'types'
 
-export const generateLatex = (meta: MetaType, questions: QuestionType[]) => {
-  return `\\documentclass[a3paper,landscape,10pt]{article}
+export const generateLatex = (exam: ExamType) => {
+  return `\\documentclass[${exam.format.toLowerCase()}paper,landscape,10pt]{article}
 %\\usepackage{xltxtra}
 \\usepackage[utf8x]{inputenc}
 \\usepackage[T1]{fontenc}
@@ -41,13 +41,13 @@ ewcommand{\\tmtextbf}[1]{{\\bfseries{#1}}}
 
 \\AMCrandomseed{1527384}
 
-${questions
+${exam.questions
   .map(
     (question, index) =>
-      `% ---------------  Question et réponse   ${index + 1} \n` +
-      generateQuestion(question, index + 1),
+      `% ---------------  Question  ${index + 1}  --------------- \n` +
+      generateQuestion(question, index + 1)
   )
-  .join("\n")}
+  .join('\n')}
 
 
 %----------------------------------------
@@ -71,23 +71,23 @@ ${questions
 
 \\vspace{2ex}
 
-\\noindent{\\bf \\emph{Département de ${meta.departement}}  } \\\\
+\\noindent{\\bf \\emph{Département de ${exam.department}}  } \\\\
 
 \\vspace{2ex}
 
-\\noindent{\\bf \\emph{Filière : ${meta.filiere}}  } \\\\
+\\noindent{\\bf \\emph{Filière : ${exam.filiere}}  } \\\\
 
 \\vspace{2ex}
 
-\\noindent{\\bf \\emph{Session : ${meta.session}}  } \\\\
+\\noindent{\\bf \\emph{Session : ${exam.session}}  } \\\\
 
 \\vspace{2ex}
 
-\\noindent{\\bf \\emph{Module : ${meta.module}}  } \\\\
+\\noindent{\\bf \\emph{Module : ${exam.module}}  } \\\\
 
 \\vspace{2ex}
 
-\\noindent{\\bf Durée : ${meta.duree} } \\\\
+\\noindent{\\bf Durée : ${exam.duration} } \\\\
 \\end{center}
 
 %%%%%%%%%%%%%  Début Saisie information étudiant
@@ -167,48 +167,78 @@ En cas d'erreur, il faut simplement effacer au « \\textbf{blanco} » mais ne pa
 `
 }
 
+//
 const generateQuestion = (question: QuestionType, index: number) => {
-  if (question.type === "text") return
-  if (question.type === "boolean") return getBooleanLatex(question, index)
-  if (question.type === "multiple") return getMultipleLatex(question, index)
+  if (question.type === 'long') return getLongLatex(question, index)
+  if (question.type === 'true_false')
+    return getTrueFalseLatex(question, index)
+  if (question.type === 'multiple_choices')
+    return getMultipleLatex(question, index)
 }
 
-const getBooleanLatex = (question: QuestionType, index: number) => {
+//
+const getLongLatex = (question: QuestionType, index: number) => {
+  const baremeList = Object.entries(question.longBareme)
+  baremeList.sort(([_, value1], [__, value2]) => value1 - value2)
+
   return `\\element{general}{
-  \\begin{question}{Q0${index}}
+\\begin{question}{Q${String(index).padStart(3, '0')}}\\bareme{haut=${
+    baremeList[baremeList.length - 1][1]
+  }}}
+${question.question}
+\\AMCOpen{lines=${question.lines}}{
+  ${baremeList.reduce((acc, [key, value], index) => {
+    return (
+      acc +
+      `\\${
+        index === baremeList.length - 1
+          ? 'correctchoice'
+          : 'wrongchoice'
+      }[${key}]{${value}}\\scoring{${value}}\n`
+    )
+  }, '')}
+\\vspace{−1.75cm}
+\\end{question}
+`
+}
+
+//
+const getTrueFalseLatex = (question: QuestionType, index: number) => {
+  return `\\element{general}{
+  \\begin{question}{${String(index).padStart(3, '0')}}
 ${question.question} :
     \\begin{reponses} \\bareme{${question.bareme}}
-      \\${question.true ? "bonne" : "mauvaise"}{Vrai}
-      \\${question.true ? "mauvaise" : "bonne"}{Faux}
+      \\${question.true ? 'correct' : 'wrong'}{Vrai}
+      \\${question.true ? 'wrong' : 'correct'}{Faux}
     \\end{reponses}
   \\end{question}
  \\vspace{2ex}
-
 }`
 }
 
+//
 const getMultipleLatex = (question: QuestionType, index: number) => {
   const isMutipleCorrect =
-    (question.options || []).filter((option) => option.correct).length > 1
-
-  // range options
-  question.options?.sort((a, b) => (a.correct ? 1 : -1))
+    (question.choices || []).filter((choice) => choice.correct)
+      .length > 1
 
   return `\\element{general}{
-\\begin{${isMutipleCorrect ? "questionmult" : "question"}}{Q0${index}}
+\\begin{${isMutipleCorrect ? 'questionmult' : 'question'}}{Q${String(index).padStart(3, '0')}}
 ${question.question} :
-%\\begin{multicols}{2}
-    \\begin{reponses} \\bareme{${question.bareme}}
-    ${question.options
+%\\begin{${question.choicesAlignement}}{2}
+    \\begin{reponses} \\bareme{formula=(NB==N?NBC:NBC+NMC==N ? 0 : NBC*${
+      question.bareme.correctChoice
+    }-NMC*${question.bareme.wrongChoice}),p=0,e=0,v=0}
+    ${question.choices
       ?.map(
-        (option, index) =>
-          `${index > 0 ? "\t\t" : "\t"} \\${
-            option.correct ? "bonne" : "mauvaise"
-          } {${option.value}}`,
+        (choice, index) =>
+          `${index > 0 ? '\t\t' : '\t'} \\${
+            choice.correct ? 'correct' : 'wrong'
+          } {${choice.value}}`
       )
-      .join("\n")}
+      .join('\n')}
     \\end{reponses}
-%\\end{multicols}
+%\\end{${question.choicesAlignement}}
   \\end{question}
  \\vspace{2ex}
 

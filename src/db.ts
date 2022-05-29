@@ -1,105 +1,92 @@
 import create from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import shortid from 'shortid'
-import { BDType, ExamenType, MethodType, QuestionType } from 'types'
-import {
-  DEPARTEMENT_LIST,
-  FILIERES_LIST,
-  FORMAT_LIST,
-} from './constants'
+import { DBType, ExamType, MethodType, QuestionType } from 'types'
 
-const initialExamen: ExamenType = {
-  id: shortid.generate(),
-  module: '',
-  filiere: FILIERES_LIST[0],
-  departement: DEPARTEMENT_LIST[0],
-  session: '',
-  duree: '',
-  format: FORMAT_LIST[0],
-  baremeParDefaut: {
-    mouvaisChoix: 0,
-    bonneChoix: 1,
-  },
-  questions: [],
-}
-
-export const nouveauExamen: MethodType<BDType['nouveauExamen']> =
-  (set) => () => {
+export const newExam: MethodType<DBType['newExam']> =
+  (set) => (exam: ExamType) => {
     set((state) => ({
       ...state,
-      examens: [...state.examens, initialExamen],
+      exams: [...state.exams, exam],
     }))
   }
 
-export const editerExamen: MethodType<BDType['editerExamen']> =
-  (set) => (examenId, data) => {
+export const editExam: MethodType<DBType['editExam']> =
+  (set) => (examId, data) => {
     set((state) => ({
       ...state,
-      examens: state.examens.map((examen) =>
-        examen.id === examenId ? { ...examen, ...data } : examen
+      exams: state.exams.map((exam) =>
+        exam.id === examId ? { ...exam, ...data } : exam
       ),
     }))
   }
 
-export const ajouterQuestion: MethodType<BDType['ajouterQuestion']> =
-  (set) => (examenId, question) => {
+export const deleteExam: MethodType<DBType['deleteExam']> =
+  (set) => (examId) => {
     set((state) => ({
       ...state,
-      examens: state.examens.map((examen) =>
-        examen.id === examenId
-          ? { ...examen, questions: [...examen.questions, question] }
-          : examen
+      exams: state.exams.filter((exam) => exam.id !== examId),
+    }))
+  }
+
+export const addQuestion: MethodType<DBType['addQuestion']> =
+  (set) => (examId, question) => {
+    set((state) => ({
+      ...state,
+      exams: state.exams.map((exam) =>
+        exam.id === examId
+          ? { ...exam, questions: [...exam.questions, question] }
+          : exam
       ),
     }))
   }
 
-export const supprimerQuestion: MethodType<
-  BDType['supprimerQuestion']
-> = (set) => (examenId, questionId) => {
-  set((state) => ({
-    ...state,
-    examens: state.examens.map((examen) =>
-      examen.id === examenId
-        ? {
-            ...examen,
-            questions: examen.questions.filter(
-              (question) => question.id !== questionId
-            ),
-          }
-        : examen
-    ),
-  }))
-}
-
-export const editerQuestion: MethodType<BDType['editerQuestion']> =
-  (set) => (examenId, questionId, data) => {
+export const deleteQuestion: MethodType<DBType['deleteQuestion']> =
+  (set) => (examId, questionId) => {
     set((state) => ({
       ...state,
-      examens: state.examens.map((examen) =>
-        examen.id === examenId
+      exams: state.exams.map((exam) =>
+        exam.id === examId
           ? {
-              ...examen,
-              questions: examen.questions.map((question) =>
+              ...exam,
+              questions: exam.questions.filter(
+                (question) => question.id !== questionId
+              ),
+            }
+          : exam
+      ),
+    }))
+  }
+
+export const editQuestion: MethodType<DBType['editQuestion']> =
+  (set) => (examId, questionId, data) => {
+    set((state) => ({
+      ...state,
+      exams: state.exams.map((exam) =>
+        exam.id === examId
+          ? {
+              ...exam,
+              questions: exam.questions.map((question) =>
                 question.id === questionId
                   ? ({ ...question, ...data } as QuestionType)
                   : question
               ),
             }
-          : examen
+          : exam
       ),
     }))
   }
 
-export const useBD = create<BDType>(
+export const useDB = create<DBType>(
   devtools(
     persist(
-      (set, get): BDType => ({
-        examens: [],
-        nouveauExamen: nouveauExamen(set, get),
-        editerExamen: editerExamen(set, get),
-        ajouterQuestion: ajouterQuestion(set, get),
-        supprimerQuestion: supprimerQuestion(set, get),
-        editerQuestion: editerQuestion(set, get),
+      (set, get): DBType => ({
+        exams: [],
+        newExam: newExam(set, get),
+        deleteExam: deleteExam(set, get),
+        editExam: editExam(set, get),
+        addQuestion: addQuestion(set, get),
+        deleteQuestion: deleteQuestion(set, get),
+        editQuestion: editQuestion(set, get),
       }),
       {
         name: 'amc-qcm-storage',

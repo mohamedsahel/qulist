@@ -3,14 +3,19 @@ import { devtools, persist } from 'zustand/middleware'
 import shortid from 'shortid'
 import produce from 'immer'
 import {
-  DEPARTEMENT_LIST,
+  DEPARTMENTS_LIST,
+  DURATION_LIST,
   FILIERES_LIST,
   FORMAT_LIST,
+  MODULE_LIST,
+  SESSION_LIST,
 } from 'src/constants'
 
+export type QuestionTypesType = 'true_false' | 'long' | 'multipe_choices'
+
 export type BaremeType = {
-  mouvaisChoix: number
-  bonneChoix: number
+  wrongChoice: number
+  correctChoice: number
 }
 
 export type OptionType = {
@@ -19,67 +24,56 @@ export type OptionType = {
   correct: boolean
 }
 
-export type ParentQuestionType<T> = {
+
+export type QuestionType = {
   id: string
-  type: T
+  type: QuesttionTypesType
   question: string
+  choices: {
+    id: string
+    value: string
+    correct: boolean
+  }[]
+  true: boolean
+  choicesAlignement: 'multicols' | 'horizontal' | 'vertical'
   bareme: BaremeType
-  ui: {
-    closed: boolean
-  }
+  longBareme: Record<string, number>
+  lines: number
 }
 
-export type MultipeChoixQuestionType =
-  ParentQuestionType<'multipe_choix'> & {
-    choix: {
-      id: number
-      value: string
-      correct: boolean
-    }[]
-    alignementDeChoix: 'vertical' | 'horizontal' | 'caree'
-  }
 
-export type VraisFauxQuestionType =
-  ParentQuestionType<'vrais_faux'> & {
-    vrais: boolean
-    alignementDeChoix: 'vertical' | 'horizontal'
-  }
+// export type QuestionType =
+//   | MultipeChoicesQuestionType
+//   | TrueFalseQuestionType
+//   | LongQuestionType
 
-export type LongQuestionType = ParentQuestionType<'long'> & {
-  lignes: number
-}
-
-export type QuestionType =
-  | MultipeChoixQuestionType
-  | VraisFauxQuestionType
-  | LongQuestionType
-
-export type ExamenType = {
+export type ExamType = {
   id: string
-  module: string
+  module: typeof MODULE_LIST[number]
   filiere: typeof FILIERES_LIST[number]
-  departement: typeof DEPARTEMENT_LIST[number]
-  session: string
-  duree: string
+  department: typeof DEPARTEMENT_LIST[number]
+  session: typeof SESSION_LIST[number]
+  duration: typeof DURATION_LIST_LIST[number]
   format: typeof FORMAT_LIST[number]
-  baremeParDefaut: BaremeType
   questions: QuestionType[]
+  createdAt: string
 }
 
-export type BDType = {
-  examens: ExamenType[]
-  nouveauExamen: () => void
-  editerExamen: (examenId: string, data: Partial<ExamenType>) => void
-  ajouterQuestion: (examenId: string, question: QuestionType) => void
-  supprimerQuestion: (examenId: string, questionId: string) => void
-  editerQuestion: (
-    examenId: string,
+export type DBType = {
+  exams: ExamType[]
+  newExam: (exam: ExamType) => void
+  editExam: (examId: string, data: Partial<ExamType>) => void
+  deleteExam: (examId: string) => void
+  addQuestion: (examId: string, question: QuestionType) => void
+  deleteQuestion: (examId: string, questionId: string) => void
+  editQuestion: (
+    examId: string,
     questionId: string,
     data: Partial<QuestionType>
   ) => void
 }
 
 export type MethodType<T> = (
-  set: SetState<BDType>,
-  get: GetState<BDType>
+  set: SetState<DBType>,
+  get: GetState<DBType>
 ) => T

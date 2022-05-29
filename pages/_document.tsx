@@ -18,9 +18,7 @@ class CustomDocument extends Document {
 
   render(): JSX.Element {
     return (
-      <Html
-        data-theme="bumblebee"
-      >
+      <Html data-theme='bumblebee'>
         <Head />
         <body>
           <Main />
