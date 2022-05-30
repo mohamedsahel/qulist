@@ -1,6 +1,7 @@
 import create from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import { DBType, ExamType, MethodType, QuestionType } from 'types'
+import getSampleExam from './utils/get-sample-exam'
 
 export const newExam: MethodType<DBType['newExam']> =
   (set) => (exam: ExamType) => {

@@ -1,7 +1,7 @@
 // @ts-ignore
 import colors from 'tailwindcss/colors'
 
-export const FILIERES_LIST = ['SMIA', 'SMPC', 'GLNT'] as const
+export const FILIERES_LIST = ['SMI', 'SMPC', 'GLNT'] as const
 
 export const DEPARTEMENT_LIST = [
   'Computer Science',
@@ -13,11 +13,7 @@ export const FORMAT_LIST = ['A3', 'A4'] as const
 
 export const DURATION_LIST = ['1h', '1.5h', '2h'] as const
 
-export const MODULE_LIST = [
-  'Module 1',
-  'Module 2',
-  'Module 3',
-] as const
+export const MODULE_LIST = ['Networks', 'Module 2', 'Module 3'] as const
 
 export const SESSION_LIST = (() => {
   const d = new Date()

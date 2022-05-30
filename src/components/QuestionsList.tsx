@@ -106,7 +106,7 @@ export default function QuestionsList() {
   )
 }
 
-const ContentEditableLatex = ({
+const ContentEditable = ({
   className,
   placeholder,
   onChange,
@@ -126,6 +126,7 @@ const ContentEditableLatex = ({
       data-ph={placeholder}
       contentEditable
       autoCorrect='off'
+      // defaultValue={value}
       // @ts-ignore
       html={value}
     />
@@ -201,7 +202,8 @@ const QuestionEditor = ({
                   value={question.lines}
                   min={1}
                   onChange={(e) =>
-                    editQuestion({ lines: +e.target.value })
+                    // @ts-ignore
+                    editQuestion({ lines: e.target.value })
                   }
                   placeholder='3'
                 />
@@ -216,7 +218,8 @@ const QuestionEditor = ({
                     editQuestion({
                       bareme: {
                         ...question.bareme,
-                        correctChoice: +e.target.value,
+                        // @ts-ignore
+                        correctChoice: e.target.value,
                       },
                     })
                   }
@@ -231,7 +234,8 @@ const QuestionEditor = ({
                       editQuestion({
                         bareme: {
                           ...question.bareme,
-                          wrongChoice: +e.target.value,
+                          // @ts-ignore
+                          wrongChoice: e.target.value,
                         },
                       })
                     }
@@ -268,9 +272,11 @@ const QuestionEditor = ({
                       value={value}
                       onChange={(e) =>
                         editQuestion({
+                          // @ts-ignore
                           longBareme: {
                             ...question.longBareme,
-                            [degree]: +e.target.value,
+                            // @ts-ignore
+                            [degree]: e.target.value,
                           },
                         })
                       }
@@ -301,7 +307,7 @@ const QuestionEditor = ({
         </div>
       </div>
       <div className='p-5 md:p-8 border-2 border-indigo-100 bg-white border-t-0 rounded-b-3xl'>
-        <ContentEditableLatex
+        <ContentEditable
           className='outline-none cursor-text text-lg'
           placeholder='type question'
           onChange={(value) =>
@@ -332,9 +338,27 @@ const QuestionEditor = ({
                           })
                         }}
                       />
-                      <ContentEditableLatex
+                      <input
+                        className='w-full max-w-full outline-none'
+                        placeholder={'Choice #' + (index + 1)}
+                        value={choice.value}
+                        onChange={(e) =>
+                          editQuestion({
+                            choices: question.choices.map((c, i) =>
+                              c.id === choice.id
+                                ? {
+                                    ...c,
+                                    value: e.target.value,
+                                  }
+                                : c
+                            ),
+                          })
+                        }
+                      />
+                      {/* <ContentEditable
                         className='w-full max-w-full'
                         placeholder={'Choice #' + (index + 1)}
+                        value={choice.value}
                         onChange={(value) =>
                           editQuestion({
                             choices: question.choices.map((c, i) =>
@@ -347,7 +371,7 @@ const QuestionEditor = ({
                             ),
                           })
                         }
-                      />
+                      /> */}
                       <button
                         className='rounded-full hover:bg-gray-200 p-2 cursor-pointer -mt-2 ml-3'
                         onClick={(e) =>
