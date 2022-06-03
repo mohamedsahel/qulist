@@ -1,0 +1,257 @@
+\documentclass[a4paper,10]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{multicol}
+\usepackage{environ}
+\usepackage{latexsym,amsmath,amssymb}
+\usepackage{fp,numprint}
+\FPmessagesfalse  % pour ne pas voir les messages de FP
+\usepackage{tikz}
+%\usepackage[francais,bloc,completemulti]{automultiplechoice} 
+% completemulti : la réponse qui se met automatiquement "aucune de ces réponses n'est correcte"
+\usepackage[francais,bloc]{automultiplechoice}
+\usepackage{multicol}
+%\setmainfont{Linux Libertine O}
+\geometry{hmargin=1.5cm,headheight=2cm,headsep=.3cm,footskip=1cm,top=2.5cm,bottom=2.5cm}
+% les plus 
+\usepackage{tabto}
+\usepackage{tikz}
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+\newcommand{\tmtextbf}[1]{{\bfseries{#1}}}
+\newcommand{\tmtextup}[1]{{\upshape{#1}}}
+%%%%%%%%%% End TeXmacs macros
+%%%
+\begin{document}
+\AMCrandomseed{1527384}
+%\AMCtext{none}{None of the above.}
+\def\AMCbeginQuestion#1#2{\par \hspace*{0.2cm}{\bf #1:} #2}
+%\def\AMCbeginAnswer#1#2{\tabto{13cm}\hspace{0mm}#2}
+\def\AMCbeginAnswer#1#2{\tabto{13cm}\tabto{13cm}#2}
+\AMCformHSpace=.5em
+\AMCinterBrep=5.5ex
+\def\AMCanswer#1#2{#1\hspace{2mm}#2\hspace{1cm}}
+%%%%
+
+%%%
+%\def\AMCformAnswer#1{\hspace{\AMCformHSpace} #1}
+%
+%\AMCboxDimensions{shape=oval}
+%\AMCcodeHspace=.5em
+%\AMCcodeVspace=.5em
+%\AMCcodeBoxSep=.1em
+%
+%\AMCinterBrep=0.5ex
+\AMCinterBquest=1.pt
+%
+%\baremeDefautM{formula=NBC-NMC, p=0}
+%\baremeDefautS{formula=NBC-NMC, p=0}
+%\bareme{formula=NBC-NMC}
+%\bareme{formula=(NB==N?NBC:NBC+NMC==N ? 0 : NBC-NMC),p=0,e=0,v=0}
+%
+%\AMCformHSpace=.1em
+%\AMCformVSpace=0.2ex
+%
+\element{Attention}{ \hspace{1.5em} \tmtextbf{ \large(N.B. : Répondez à la question \underline{sans}  cocher les cases)}}
+
+
+\AMCrandomseed{1527384}
+%-----------------------------------------------------
+
+% -----------------------------------------------
+\element{groupA}{
+\begin{question}{Q001}
+Le Maroc est un payé Afrecain
+\begin{choicescustom} \bareme{formula=NBC-NMC}
+\bonne{Vrai }
+\mauvaise{faux}
+\end{choicescustom}
+\end{question}
+}
+\element{groupA}{
+\begin{question}{Q002}
+Question 2
+\begin{choicescustom} \bareme{formula=NBC-NMC}
+\bonne{Vrai }
+\mauvaise{Faux}
+\end{choicescustom}
+\end{question}
+}
+\element{groupA}{
+\begin{question}{Q003}
+Question 3
+\begin{choicescustom} \bareme{formula=NBC-NMC}
+\mauvaise{Faux}
+\bonne{Vrai }
+\end{choicescustom}
+\end{question}
+}
+\element{groupA}{
+\begin{question}{Q004}
+Question 4
+\begin{choicescustom} \bareme{formula=NBC-NMC}
+\bonne{Faux}
+\mauvaise{Vrai }
+\end{choicescustom}
+\end{question}
+}
+
+%----------------------------------------------
+\element{general2}{
+  \begin{questionmult}{QRC1}    
+Question multiple avec deux bonnes réponses.
+    \begin{reponses}   \bareme{formula=(NB==N?NBC:NBC+NMC==N ? 0 : NBC-NMC),p=0,e=0,v=0}
+	\bonne{Bonne réponse 1}
+	\bonne{Bonne réponse 2}
+	     \mauvaise{Mauvaise réponse}
+	     \mauvaise{Mauvaise réponse}
+    \end{reponses}
+  \end{questionmult}\vspace{2ex}
+} 
+\element{general2}{
+  \begin{questionmult}{QRC2}    
+Question multiple avec trois bonnes réponses.
+    \begin{reponses}   
+	\bonne{Bonne réponse 1}
+	\bonne{Bonne réponse 2}
+	\bonne{Bonne réponse 3}
+	     \mauvaise{Mauvaise réponse}
+    \end{reponses}
+  \end{questionmult}\vspace{2ex}
+} 
+\element{general2}{
+  \begin{question}{QRC3}    
+Question simple (Une seule bonne réponse)
+    \begin{reponses}   \bareme{formula=NBC-NMC}
+	\bonne{Bonne réponse} 
+	      \mauvaise{Mauvaise réponse}
+	       \mauvaise{Mauvaise réponse}
+    \end{reponses}
+  \end{question}\vspace{2ex}
+} 
+
+%
+%------------------------------- Question ouverte-----
+\element{QuestionOuv}{
+\vspace{1em}
+\begin{question}[ ]{Lang1} 
+Poser la question ici 
+
+  \restituegroupe{Attention} 
+  \AMCOpen{ backgroundcol=white,lines=2,dots=True}
+  { \mauvaise[1]{ }\scoring{0}\mauvaise[2]{ }\scoring{1}\bonne[3]{}\scoring{2}}
+
+\vspace{-1.5em}			       
+ \end{question}
+ 
+}
+%----------------------------------------------------------
+%---------------------------------------------------------
+\element{QuestOuv}{
+
+\restituegroupe{QuestionOuv}
+
+}
+%----------------------------------------------------------
+%----------------------------------------------
+% -----------------------------------------------
+%
+\onecopy{1}{
+%
+%\noindent
+\begin{center}
+\includegraphics[scale=0.35]{LOGOFSM.jpg}\\
+\large\bf Département de XXX  \\
+
+\,{\bf Filière XX : Semestre XX \hfill Session Ordinaire \hfill (Automne 2017/2018)} \\
+   
+\centering\bf ~ ~ ~ ~ ~ ~ ~ Module : XXXXXXXXXX   \hfill  Durée : 35 minutes~ ~ ~ ~ ~ ~ ~ \\
+\end{center}
+%\begin{center} Durée : 35 minutes. \end{center}
+
+%%%%%%%%%%%%%  Début Saisie information étudiant 
+
+{\setlength{\parindent}{0pt}\hspace*{\fill}\AMCcode{CNE}{10}\hspace*{\fill}
+\begin{minipage}[b]{9.5cm}
+\hspace{-1ex} $\Longleftarrow $ Codez les \textbf{10 chiffres} de votre \textbf{Code National \underline{d'Etudiant} } (\tmtextbf{C.N.E.}) ou \tmtextbf{Massar} ci-contre de la \tmtextbf{gauche} vers la \tmtextbf{droite}. \textbf{Attention} à ne noircir \textbf{qu'UN chiffre par colonne}. Pour le \tmtextbf{Massar} remplacer \textbf{la première} lettre en cochant le \tmtextbf{0} de \textbf{la première colonne} et remplir obligatoirement le cadre ci-dessous : 
+
+\vspace{1ex}
+\hfill\champnom{\fbox{
+\begin{minipage}{.95\linewidth}
+\vspace*{3mm}
+\tmtextbf{Nom :}
+\vspace*{.5cm}\dotfill
+
+\tmtextbf{Prénom :}
+\vspace*{.5cm}\dotfill
+
+\tmtextbf{C.N.E : ou Massar :}
+\vspace*{.5cm}\dotfill
+
+\tmtextbf{Local :}
+\vspace*{.5cm}\dotfill 
+\tmtextbf{N° examen :}
+\dotfill
+
+\end{minipage}
+}}\hfill\vspace{-1ex}
+\end{minipage}\hspace*{\fill}
+
+}
+%%%%%%%%%%%%%  Fin Saisie information étudiant 
+
+
+%
+%\vspace{2mm}
+\begin{center}\em
+\begin{center} \large \bf \emph{Consignes} \end{center}
+\begin{center} 
+%Les questions faisant apparaître le symbole \multiSymbole{} présentent plusieurs bonnes réponses. 
+Vous devez   \textbf{ \underline{colorier}} les cases au \textbf{\underline{stylo noir}} ou au \textbf{\underline{stylo bleu}} pour répondre aux questions. 
+%Des points négatifs seront affectés aux mauvaises réponses.   
+En cas d'erreur, il faut simplement effacer au « \textbf{blanco} » mais ne pas redessiner la case. \includegraphics[width=0.5\textwidth]{Att.jpg}
+\end{center}
+\end{center}
+
+%\begin{center}
+%\begin{minipage}[c]{.2\linewidth}
+%\includegraphics[width=0.5\textwidth]{Att.jpg}
+%\end{minipage}
+%\end{center}
+\hrule\vspace{0.2ex}
+
+
+%----------------------------------------------------- 
+
+\begin{center}
+      \hrule\vspace{2mm}
+	  \bf\Large \textsf{PREMIER TYPE : VRAI OU FAUX}
+      \vspace{1mm}\hrule
+\end{center}
+%\begin{multicols}{2} \columnseprule=1.0pt
+\AMCnumero{1}
+\begin{flushleft}\hrule\vspace{2mm}\bf 1. Maroc :\vspace{1mm}\hrule\end{flushleft}
+\melangegroupe{groupA}
+\restituegroupe{groupA} 
+%\end{multicols} 
+%-------------------------------------------------------
+%----------------------------------------------------- 
+
+\begin{center}
+      \hrule\vspace{2mm}
+	  \bf\Large \textsf{DEUXIÈME TYPE : RÉPONSE A COCHER}
+      \vspace{1mm}\hrule
+\end{center}
+\begin{multicols}{2} \columnseprule=1.0pt
+\AMCnumero{1}
+\melangegroupe{general2}
+\restituegroupe{general2} 
+\end{multicols} 
+%-------------------------------------------------------
+
+\restituegroupe{QuestOuv}
+
+}
+\end{document}
