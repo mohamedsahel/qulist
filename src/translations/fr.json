@@ -1,0 +1,62 @@
+{
+  "header": {
+    "download": "Télécharger",
+    "newExam": "Nouvel examen",
+    "hideLatex": "Cacher Latex",
+    "showLatex": "Afficher Latex"
+  },
+  "examCard": {
+    "title": "{{ module }} examen",
+    "questions": "{{ count }} questions",
+    "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cet examen?"
+  },
+  "examEditor": {
+    "department": {
+      "label": "Département",
+      "placeholder": "ex: Informatique"
+    },
+    "filiere": {
+      "label": "Filière",
+      "placeholder": "ex: SMI Semestre 6"
+    },
+    "session": {
+      "label": "Session",
+      "placeholder": "ex: Automne Ordinaire 2021/2022"
+    },
+    "module": {
+      "label": "Module",
+      "placeholder": "ex: Réseaux Avancés"
+    },
+    "duration": {
+      "label": "Durée",
+      "placeholder": "ex: 1h 30mn"
+    },
+    "format": {
+      "label": "Format",
+      "placeholder": "Sélectionnez le format",
+      "noResult": "Aucun résultat trouvé"
+    },
+    "shuffle": {
+      "label": "Mélanger les questions"
+    }
+  },
+  "questionsList": {
+    "addQuestion": "Ajouter une question",
+    "titles": {
+      "duplicate": "Dupliquer",
+      "delete": "Supprimer",
+      "edit": "Mode édition",
+      "preview": "Mode prévisualisation"
+    },
+    "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cette question?"
+  },
+  "questionEditor": {
+    "lines": "Lignes",
+    "dragTitle": "déplacer pour réorganiser",
+    "addChoice": "Choix",
+    "questionPlaceholder": "saisissez la question ici",
+    "choicePlaceholder": "choix #{{ index }}",
+    "true": "Vrai",
+    "false": "Faux"
+  }
+}

@@ -1,20 +1,21 @@
-import classNames from 'classnames'
 import {
   HiOutlineDownload,
   HiOutlineEye,
   HiOutlineEyeOff,
 } from 'react-icons/hi'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDB } from 'src/db'
-import { getNewExam } from 'src/utils'
-import { download } from 'src/utils/download'
-import { generateLatex } from 'src/utils/generate-latex'
-import Modal from './Modal'
+import { useDB } from '~/db'
+import { download } from '~/utils/download'
+import { generateLatex } from '~/utils/generate-latex'
+import { getSampleExam } from '~/utils'
 import { useOpenedExam } from './OpenedExamProvider'
+import { useTranslation } from './I18nProvider'
+import LangSwitcher from './LangSwitcher'
 
 export default function Header(): JSX.Element {
   const navigate = useNavigate()
   const openedExam = useOpenedExam()
+  const { t } = useTranslation()
 
   const { newExam, exam } = useDB((state) => ({
     newExam: state.newExam,
@@ -22,36 +23,32 @@ export default function Header(): JSX.Element {
   }))
 
   const handleNewExam = () => {
-    const exam = getNewExam()
+    const exam = getSampleExam()
     newExam(exam)
     navigate('?exam=' + exam.id)
   }
 
-  const HideIcon = openedExam?.showLatex
-    ? HiOutlineEyeOff
-    : HiOutlineEye
+  const HideIcon = openedExam?.showLatex ? HiOutlineEyeOff : HiOutlineEye
 
   return (
     <header className='fixed bg-indigo-500 backdrop-blur-md bg-opacity-80 z-10 inset-x-0 top-0'>
       <div className='py-2 inner-container max-w-screen-lg flex items-center justify-between relative'>
-        <Link to='/'>
-          <img
-            src='/images/logo.svg'
-            alt='Logo'
-            className='cursor-pointer'
-          />
-        </Link>
+        <div className='flex items-center gap-3'>
+          <Link to='/'>
+            <img src='/images/logo.svg' alt='Logo' className='cursor-pointer' />
+          </Link>
+          <LangSwitcher />
+        </div>
 
         {openedExam ? (
           <div className='flex items-center gap-6'>
-            {/* <LatexEditorModal className='absolute left-1/2 -translate-x-[65%]' /> */}
             <HideIcon
               className='text-2xl text-gray-100 cursor-pointer'
-              onClick={() =>
-                openedExam.setShowLatex(!openedExam.showLatex)
-              }
+              onClick={() => openedExam.setShowLatex(!openedExam.showLatex)}
               title={
-                openedExam?.showLatex ? 'Hide Latex' : 'Show Latex'
+                openedExam?.showLatex
+                  ? t('header.hideLatex')
+                  : t('header.showLatex')
               }
             />
             <button
@@ -59,41 +56,25 @@ export default function Header(): JSX.Element {
               onClick={() =>
                 download(
                   `${exam?.module} - ${exam?.session} exam.tex`,
-                  generateLatex(exam as any)
+                  generateLatex(exam as any),
                 )
-              }>
+              }
+            >
               <HiOutlineDownload className='text-xl' />
-              <span className='pl-2 hidden sm:block'>Download</span>
+              <span className='pl-2 hidden sm:block'>
+                {t('header.download')}
+              </span>
             </button>
           </div>
         ) : (
           <button
             className='rounded-full bg-white py-3 px-6 hover:scale-105'
-            onClick={handleNewExam}>
-            New Exam
+            onClick={handleNewExam}
+          >
+            {t('header.newExam')}
           </button>
         )}
       </div>
     </header>
   )
 }
-
-// const LatexEditorModal = ({ className }: { className: string }) => {
-//   return (
-//     <Modal
-//       button={
-//         <button className={classNames('rounded-lg bg-black bg-opacity-25 py-2 px-5 hover:bg-opacity-30 select-none text-white', className)}>
-//           Math
-//         </button>
-//       }>
-//         <div>
-
-//         </div>
-//       {/* {({ closeModal }: any) => (
-//         <div>
-//           <button onClick={closeModal}>close</button>
-//         </div>
-//       )} */}
-//     </Modal>
-//   )
-// }

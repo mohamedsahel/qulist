@@ -5,8 +5,9 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useDB } from '~/db'
+import { getSampleExam } from '~/utils'
 
 const OpenedExamContext = createContext<{
   openedExamId: string
@@ -22,11 +23,20 @@ function OpenedExamProvider({
 }): JSX.Element {
   const [showLatex, setShowLatex] = useState(false)
   const [searchParams] = useSearchParams()
-  const { openedExam } = useDB((state) => ({
+  const { openedExam, exams, newExam } = useDB((state) => ({
     openedExam: state.exams.find((e) => e.id === searchParams.get('exam')),
+    exams: state.exams,
+    newExam: state.newExam,
   }))
+  const navigate = useNavigate()
 
-  console.log('searchParams :>> ', searchParams)
+  useEffect(() => {
+    if (exams.length === 0) {
+      const exam = getSampleExam()
+      navigate('?exam=' + exam.id)
+      newExam(exam)
+    }
+  }, [exams.length])
 
   useEffect(() => {
     setShowLatex(false)

@@ -88,7 +88,7 @@ export const useDB = create<DBType>(
         editQuestion: editQuestion(set, get),
       }),
       {
-        name: 'amc-qcm-storage',
+        name: 'qulist-storage',
       },
     ),
   ),
