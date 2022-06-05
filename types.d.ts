@@ -1,7 +1,7 @@
 import create, { GetState, SetState } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import shortid from 'shortid'
-import produce from 'immer'
+
 import {
   DEPARTMENTS_LIST,
   DURATION_LIST,
@@ -11,7 +11,10 @@ import {
   SESSION_LIST,
 } from 'src/constants'
 
-export type QuestionTypesType = 'true_false' | 'long' | 'multipe_choices'
+export type QuestionTypesType =
+  | 'true_false'
+  | 'long'
+  | 'multipe_choices'
 
 export type BaremeType = {
   wrongChoice: number
@@ -23,7 +26,6 @@ export type OptionType = {
   value: string
   correct: boolean
 }
-
 
 export type QuestionType = {
   id: string
@@ -37,20 +39,21 @@ export type QuestionType = {
   true: boolean
   choicesAlignement: 'multicols' | 'horizontal' | 'vertical'
   bareme: BaremeType
-  longBareme: Record<string, number>
+  longBareme: string[]
   lines: number
+  previewMode: boolean
 }
-
 
 export type ExamType = {
   id: string
-  module: typeof MODULE_LIST[number]
-  filiere: typeof FILIERES_LIST[number]
-  department: typeof DEPARTEMENT_LIST[number]
-  session: typeof SESSION_LIST[number]
-  duration: typeof DURATION_LIST_LIST[number]
+  module: string
+  filiere: string
+  department: string
+  session: string
+  duration: string
   format: typeof FORMAT_LIST[number]
   questions: QuestionType[]
+  shuffleQuestions: boolean
   createdAt: string
 }
 

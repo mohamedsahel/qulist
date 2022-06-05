@@ -3,7 +3,6 @@ import {
   cloneElement,
   Fragment,
   isValidElement,
-  ReactNode,
   useEffect,
   useState,
 } from 'react'
@@ -15,7 +14,7 @@ export default function Modal({
   ...rest
 }: {
   button?: JSX.Element
-  children: ReactNode
+  children: JSX.Element
   opened?: boolean
   [key: string]: any
 }) {

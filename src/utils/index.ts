@@ -1,26 +1,21 @@
 import shortid from 'shortid'
-import {
-  DEPARTEMENT_LIST,
-  DURATION_LIST,
-  FILIERES_LIST,
-  FORMAT_LIST,
-  MODULE_LIST,
-  SESSION_LIST,
-} from 'src/constants'
-import { ExamType, QuestionType } from 'types'
+import { QuestionType } from 'types'
+import { ExamType } from 'types'
+import { FORMAT_LIST } from '~/constants'
 
-export const getNewExam = (): ExamType => {
+export const getSampleExam = () => {
   return {
     id: shortid.generate(),
-    module: MODULE_LIST[0],
-    filiere: FILIERES_LIST[0],
-    department: DEPARTEMENT_LIST[0],
-    session: SESSION_LIST[0],
-    duration: DURATION_LIST[0],
+    module: 'Networks',
+    filiere: 'SMI Semester 6',
+    department: 'Computer Science',
+    session: 'Ordinary Autumn 2021/2022',
+    duration: '60min',
     format: FORMAT_LIST[0],
     questions: [],
     createdAt: new Date().toISOString(),
-  }
+    shuffleQuestions: true,
+  } as ExamType
 }
 
 export const getNewQuestion = (): QuestionType => {
@@ -32,23 +27,33 @@ export const getNewQuestion = (): QuestionType => {
       wrongChoice: 0,
       correctChoice: 1,
     },
-    longBareme: {
-      A: 0,
-      B: 1,
-      C: 2,
-    },
+    longBareme: ['0', '0.5', '1'],
     choices: [],
     choicesAlignement: 'multicols',
     true: false,
     lines: 3,
+    previewMode: false,
   } as QuestionType
 }
 
-const degreesList = ['A', 'B', 'C', 'D', 'E', 'F']
+export const escapeRegExp = (input: string): string => {
+  return (input || '').replace(/([.*+?^${}()|\[\]\/\\])/g, '\\$1')
+}
 
-export const getNextLongDegree = (degreesArray: string[]) => {
-  const lastDegree = degreesArray[degreesArray.length - 1]
-  const nextDegreeIndex = degreesList.indexOf(lastDegree) + 1
+export const renderTemplate = (
+  template: string,
+  options?: Record<string, any>,
+) => {
+  if (!options) {
+    return template
+  }
 
-  return degreesList[nextDegreeIndex]
+  return Object.keys(options).reduce((acc, option) => {
+    const regex = new RegExp('{{\\s*' + escapeRegExp(option) + '\\s*}}', 'g')
+    return acc.replace(regex, options[option])
+  }, template)
+}
+
+export const nestedValue = (obj: any, path: string) => {
+  return path.split('.').reduce((acc, part) => acc && acc[part], obj)
 }

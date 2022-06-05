@@ -1,7 +1,6 @@
 import create from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import { DBType, ExamType, MethodType, QuestionType } from 'types'
-import getSampleExam from './utils/get-sample-exam'
 
 export const newExam: MethodType<DBType['newExam']> =
   (set) => (exam: ExamType) => {
@@ -16,7 +15,7 @@ export const editExam: MethodType<DBType['editExam']> =
     set((state) => ({
       ...state,
       exams: state.exams.map((exam) =>
-        exam.id === examId ? { ...exam, ...data } : exam
+        exam.id === examId ? { ...exam, ...data } : exam,
       ),
     }))
   }
@@ -36,7 +35,7 @@ export const addQuestion: MethodType<DBType['addQuestion']> =
       exams: state.exams.map((exam) =>
         exam.id === examId
           ? { ...exam, questions: [...exam.questions, question] }
-          : exam
+          : exam,
       ),
     }))
   }
@@ -50,10 +49,10 @@ export const deleteQuestion: MethodType<DBType['deleteQuestion']> =
           ? {
               ...exam,
               questions: exam.questions.filter(
-                (question) => question.id !== questionId
+                (question) => question.id !== questionId,
               ),
             }
-          : exam
+          : exam,
       ),
     }))
   }
@@ -69,10 +68,10 @@ export const editQuestion: MethodType<DBType['editQuestion']> =
               questions: exam.questions.map((question) =>
                 question.id === questionId
                   ? ({ ...question, ...data } as QuestionType)
-                  : question
+                  : question,
               ),
             }
-          : exam
+          : exam,
       ),
     }))
   }
@@ -90,8 +89,20 @@ export const useDB = create<DBType>(
         editQuestion: editQuestion(set, get),
       }),
       {
-        name: 'amc-qcm-storage',
-      }
-    )
-  )
+        name: 'qulist-storage',
+      },
+    ),
+  ),
+)
+
+export const useShowLatex = create<{
+  showLatex: boolean
+  toggleShowLatex: () => void
+}>(
+  devtools(
+    (set, get) => ({
+      showLatex: false,
+      toggleShowLatex: () => set({ showLatex: !get().showLatex }),
+    }),
+  ),
 )
