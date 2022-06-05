@@ -1,7 +1,6 @@
 import { Combobox, Switch, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { useDB } from '~/db'
-import { useOpenedExam } from './OpenedExamProvider'
+import { useDB, useShowLatex } from '~/db'
 import { HiOutlineCheck, HiOutlineSelector } from 'react-icons/hi'
 import { FORMAT_LIST } from '~/constants'
 import QuestionsList from './QuestionsList'
@@ -12,12 +11,17 @@ import SyntaxHighlighter from 'react-syntax-highlighter'
 import codeStyle from '~/utils/get-code-style'
 import classNames from 'classnames'
 import { useTranslation } from './I18nProvider'
+import useOpenedExam from '~/utils/useOpenedExam'
 
 export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
-  const { showLatex, openedExamId } = useOpenedExam() as any
+  const openedExam = useOpenedExam() as any
   const { editExam, exam } = useDB((state) => ({
-    exam: state.exams.find((e) => e.id === openedExamId) as ExamType,
-    editExam: (data: Partial<ExamType>) => state.editExam(openedExamId, data),
+    exam: state.exams.find((e) => e.id === openedExam.id) as ExamType,
+    editExam: (data: Partial<ExamType>) =>
+      state.editExam(openedExam.id, data),
+  }))
+  const { showLatex } = useShowLatex((state) => ({
+    showLatex: state.showLatex,
   }))
   const { t } = useTranslation()
 
@@ -35,7 +39,7 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
     >
       <div
         className={classNames(
-          'outer-container rounded-t-[2.5rem] min-h-[92vh] py-8 lg:py-12 shadow-2xl bg-white',
+          'outer-container rounded-t-[2.5rem] min-h-[92vh] py-8 md:py-12 shadow-2xl bg-white',
         )}
       >
         {showLatex ? (
@@ -166,14 +170,14 @@ const ShuffleQuestionsSwitch = ({
 }
 
 const FormatField = () => {
-  const { openedExamId } = useOpenedExam() as any
+  const openedExam = useOpenedExam() as any
   const { format, editExam } = useDB((state) => ({
-    format: state.exams.find((e) => e.id === openedExamId)?.format,
+    format: state.exams.find((e) => e.id === openedExam.id)?.format,
     editExam: state.editExam,
   }))
 
   const handleValueChange = (value: typeof format) => {
-    editExam(openedExamId, { format: value })
+    editExam(openedExam.id, { format: value })
   }
 
   const { t } = useTranslation()

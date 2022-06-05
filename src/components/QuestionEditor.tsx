@@ -204,7 +204,7 @@ export const QuestionEditor = ({
                         checked={choice.correct}
                         onChange={(e) => {
                           editQuestion({
-                            choices: question.choices.map((c, i) =>
+                            choices: question.choices.map((c) =>
                               c.id === choice.id
                                 ? { ...c, correct: e.target.checked }
                                 : c,
@@ -218,7 +218,7 @@ export const QuestionEditor = ({
                         value={choice.value}
                         onChange={(e) =>
                           editQuestion({
-                            choices: question.choices.map((c, i) =>
+                            choices: question.choices.map((c) =>
                               c.id === choice.id
                                 ? {
                                     ...c,
@@ -235,7 +235,7 @@ export const QuestionEditor = ({
 
                       <button
                         className='rounded-full hover:bg-gray-200 p-2 cursor-pointer -mt-2 ml-3'
-                        onClick={(e) =>
+                        onClick={() =>
                           editQuestion({
                             choices: question.choices.filter(
                               (c) => c.id !== choice.id,
@@ -276,7 +276,7 @@ export const QuestionEditor = ({
                         type='radio'
                         className='w-5 h-5 accent-indigo-500 mr-4'
                         checked={question.true === bool}
-                        onChange={(e) => {
+                        onChange={() => {
                           editQuestion({
                             true: bool,
                           })

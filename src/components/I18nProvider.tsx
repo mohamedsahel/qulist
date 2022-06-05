@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState, useEffect, useLayoutEffect } from 'react'
+import { createContext, ReactNode, useContext, useState, useLayoutEffect } from 'react'
 import { nestedValue, renderTemplate } from '~/utils'
 import Cookies from 'js-cookie'
 import { LANGUAGES } from '~/translations'

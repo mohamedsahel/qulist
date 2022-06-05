@@ -1,29 +1,27 @@
 import { useDB } from '~/db'
-import { useOpenedExam } from '~/components/OpenedExamProvider'
-import ExamEditor from '~/components/ExamEditor'
 import ExamCard from '~/components/ExamCard'
+import { useEffect } from 'react'
+import useNewExam from '~/utils/useNewExam'
 
 export default function Home(): JSX.Element {
-  const openedExam = useOpenedExam()
   const { exams, deleteExam } = useDB((state) => ({
     exams: state.exams,
     deleteExam: state.deleteExam,
   }))
+  const newExam = useNewExam()
 
-  if (openedExam) {
-    return (
-      <main className='mt-[4.4rem]'>
-        <ExamEditor isShowing />
-      </main>
-    )
-  }
+  useEffect(() => {
+    if (exams.length === 0) {
+      newExam()
+    }
+  }, [exams.length])
 
   exams.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   )
 
   return (
-    <main className='inner-container mt-24'>
+    <main className='inner-container my-24'>
       <div className='grid md:grid-cols-2 gap-6 '>
         {exams.map((exam, index) => (
           <ExamCard

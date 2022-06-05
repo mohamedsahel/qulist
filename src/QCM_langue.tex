@@ -1,0 +1,451 @@
+\documentclass[a3paper,landscape,10pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais,bloc]{automultiplechoice}
+\usepackage{multicol}
+
+\geometry{hmargin=2.5cm,headheight=2.5cm,headsep=.3cm,footskip=1cm,top=2.5cm,bottom=2.5cm}
+% les plus
+\usepackage{tabto}   % ser à spécifier la distance de séparation
+\usepackage{tikz}
+\setlength\multicolsep{3pt}
+\newcommand{\tmtextbf}[1]{{\bfseries{#1}}}
+\usepackage{fp,numprint}
+\usepackage{enumitem}
+
+
+
+\begin{document}
+\AMCrandomseed{1527384}
+
+\def\AMCbeginQuestion#1#2{\par \hspace*{0mm}{\bf #1:} #2}
+\def\AMCbeginAnswer#1#2{\tabto{13cm}\tabto{13cm}#2}
+
+\AMCformHSpace=.5em    %.5em
+\AMCinterBrep=5.5ex   % 5.5ex
+\def\AMCanswer#1#2{#1\hspace{2mm}#2\hspace{1cm}}
+%\def\AMCanswer#1#2{}
+%%%%
+
+\AMCinterIrep=2pt  %2
+\AMCinterBrep=2pt  %2
+\AMCinterIquest=2pt %2
+\AMCinterBquest=1.5pt %1,5
+%
+%\baremeDefautM{formula=NBC-NMC, p=0}
+%\bareme{b=1,m=0,e=0,v=0}
+
+
+\element{Attention}{ \hspace{1.5em} (N.B. : Répondez à la question \textbf{sans  cocher les cases})}
+
+
+\AMCrandomseed{1527384}
+
+% -------------------- Compréhension -----------------
+\element{general}{
+  \begin{question}{Compr1}
+\textbf{Dans ce texte il s'agit de :}
+ %   \begin{multicols}{3}
+    \begin{reponses}  \bareme{b=1,m=0,e=0,v=0}
+	\bonne{La plantation des arbres pour gérer le  réchauffement climatique.}
+		    \mauvaise{La déplantation des arbres en faveur du réchauffement climatique.}
+			\mauvaise{La déplantation des arbres contre le réchauffement climatique.}
+			\mauvaise{La plantation des arbres en faveur du réchauffement climatique.}
+    \end{reponses}
+   % \end{multicols}
+  \end{question}
+  \vspace{2ex}
+
+}
+%----------------------------------------
+\element{general}{
+  \begin{question}{Compr2}
+\textbf{L'étude des chercheurs portent entre autre à identifier :}
+ %   \begin{multicols}{3}
+    \begin{reponses} \bareme{b=1,m=0,e=0,v=0}
+	\bonne{Les arbres les plus efficaces à lutter contre le réchauffement climatique.}
+		    \mauvaise{Les arbres les plus efficaces à s'adapter au réchauffement climatique.}
+			\mauvaise{Les arbres les plus inefficaces à s'adapter au réchauffement climatique.}
+			\mauvaise{Les arbres les plus inefficaces à lutter contre le réchauffement climatique.}
+    \end{reponses}
+ %   \end{multicols}
+  \end{question}
+  \vspace{2ex}
+
+}
+%----------------------------------------
+\element{general}{
+  \begin{question}{Compr3}
+\textbf{La stratégie adoptée par les chercheurs  pour lutter contre ce phénomène est : }
+ %   \begin{multicols}{3}
+    \begin{reponses}   \bareme{b=1,m=0,e=0,v=0}
+	\bonne{Le recoupement adéquat entre sites, arbres et les problèmes de santé.}
+		   \mauvaise{Le recoupement inadéquat entre sites, arbres et les problèmes de santé.}
+			\mauvaise{Le recoupement adéquat uniquement entre sites et arbres.}
+			\mauvaise{Le recoupement inadéquat uniquement entre sites et arbres.}
+    \end{reponses}
+ %   \end{multicols}
+  \end{question}
+  \vspace{2ex}
+
+}
+
+\element{general}{
+  \begin{question}{Compr4}
+\textbf{L'objectif de cette étude :}
+ %   \begin{multicols}{3}
+    \begin{reponses}   \bareme{b=1,m=0,e=0,v=0}
+	\bonne{Améliorer la santé et l'environnement des citoyens.}
+		   \mauvaise{Sensibiliser à la santé et à l'environnement des citoyens.}
+			\mauvaise{Nuire à la santé et à l'environnement des citoyens.}
+			\mauvaise{Gérer la santé et l'environnement des citoyens.}
+    \end{reponses}
+ %   \end{multicols}
+  \end{question}
+  \vspace{2ex}
+
+}
+%----------------------------------------
+\element{Compre}{
+\restituegroupe{general}
+\melangegroupe{general}
+}
+
+%----------------------------------------
+
+%
+%------------------------------- Production écrite -----
+\element{Langue}{
+\vspace{1em}
+\begin{question}[ ]{Langue1}
+\textbf{Relevez du texte une définition scientifique. (2 points).}
+\\
+  \restituegroupe{Attention}
+  \AMCOpen{backgroundcol=white,lines=2,dots=True}
+{\mauvaise[1]{ }\scoring{0}\mauvaise[2]{ }\scoring{1}\mauvaise[3]{ }\scoring{1.5}\bonne[4]{ }\scoring{2}}
+\vspace{-1.5em}
+ \end{question}
+
+}
+%-----------------------------------------------------
+%------------------------------- Production écrite -----
+
+\element{Langue}{
+\vspace{1em}
+\begin{question}[ ]{Langue2}
+\textbf{De quel type est- elle? (1 point).}
+\\
+  \restituegroupe{Attention}
+  \AMCOpen{backgroundcol=white,lines=1,dots=True}
+{\mauvaise[1]{ }\scoring{0}\bonne[2]{ }\scoring{1}}
+\vspace{-1.5em}
+ \end{question}
+
+}
+
+\element{Langue}{
+\vspace{1em}
+\begin{question}[ ]{Langue3}
+\textbf{Justifiez votre réponse. (2 points).}
+\\
+  \restituegroupe{Attention}
+  \AMCOpen{backgroundcol=white,lines=2,dots=True}
+ {\mauvaise[1]{ }\scoring{0}\mauvaise[2]{ }\scoring{1}\bonne[3]{ }\scoring{2}}
+\vspace{-1.5em}
+ \end{question}
+
+}
+%-----------------------------------------------------
+%------------------------------- Production écrite -----
+\element{Langue}{
+\vspace{1em}
+\begin{question}[ ]{Langue4}
+{Reformulez votre définition. (2 points).}
+\\
+  \restituegroupe{Attention}
+ %  \restituegroupe{Attention}
+  \AMCOpen{backgroundcol=white,lines=2,dots=True}
+{\mauvaise[1]{ }\scoring{0}\mauvaise[2]{ }\scoring{0.5}\mauvaise[3]{ }\scoring{1}\bonne[4]{ }\scoring{2}}
+\vspace{-1.5em}
+ \end{question}
+
+}
+
+\element{Langue}{
+\vspace{1em}
+\begin{question}[ ]{Langue5}
+{Quel raisonnement est-il décliné dans le texte? (1 point).}
+\\
+  \restituegroupe{Attention}
+  \AMCOpen{backgroundcol=white,lines=1,dots=True}
+{\mauvaise[1]{ }\scoring{0}\bonne[2]{ }\scoring{1}}
+\vspace{-1.5em}
+ \end{question}
+
+}
+
+
+\element{Langue}{
+\vspace{1em}
+\begin{question}[ ]{Langue6}
+{Quelle hypothèse de l'expérience est-elle étayée dans le texte? (2points).}
+\\
+  \restituegroupe{Attention}
+  \AMCOpen{backgroundcol=white,lines=2,dots=True}
+{\mauvaise[1]{ }\scoring{0}\mauvaise[2]{ }\scoring{1}\bonne[3]{ }\scoring{2}}
+\vspace{-1.5em}
+ \end{question}
+
+}
+
+
+
+
+\element{Langue}{
+\vspace{1em}
+\begin{question}[ ]{Langue7}
+{Argumentez votre réponse par le biais de deux outils linguistiques.(2points).}
+\\
+  \restituegroupe{Attention}
+  \AMCOpen{backgroundcol=white,lines=2,dots=True}
+{\mauvaise[1]{ }\scoring{0}\mauvaise[2]{ }\scoring{1}\bonne[3]{ }\scoring{2}}
+\vspace{-1.5em}
+ \end{question}
+
+}
+
+
+
+%\element{Langue}{
+%\vspace{1em}
+%\begin{question}[ ]{Langue7}
+%\textbf{Argumentez votre réponse par le biais d'un outil linguistique exprimant la généralité. (1 point).}
+%\\
+%  \restituegroupe{Attention}
+%  \AMCOpen{backgroundcol=white,lines=1,dots=True}
+%{\mauvaise[1]{ }\scoring{0}\bonne[2]{ }\scoring{1}}
+%\vspace{-1.5em}
+% \end{question}
+%
+%}
+
+%\element{Langue}{
+%\vspace{1em}
+%\begin{question}[ ]{Langue8}
+%\textbf{Dégagez du texte un troisième raisonnement scientifique.(1 point).}
+%\\
+%  \restituegroupe{Attention}
+%  \AMCOpen{backgroundcol=white,lines=1,dots=True}
+%{\mauvaise[1]{ }\scoring{0}\bonne[2]{ }\scoring{1}}
+%\vspace{-1.5em}
+% \end{question}
+%
+%}
+
+\element{PartieLangue}{
+
+\restituegroupe{Langue}
+
+}
+
+%-----------------------------------------------------
+%------------------------------- Production écrite -----
+
+%-------------------------------
+%------------------------------- Production écrite -----
+
+%-------------------------------
+
+%----------------------------------------------------------
+
+
+
+%------------------------------- Production écrite -----
+\element{ProductionEcr}{
+\vspace{1em}
+\begin{question}[ ]{Production}
+\textbf{Donnez la définition scientifique de l'écologie en respectant les critères de la vérifiabilité de la définition.}\\
+
+  \restituegroupe{Attention}
+  \AMCOpen{backgroundcol=white,lines=4,dots=True}
+  {\mauvaise[1]{ }\scoring{0}\mauvaise[2]{ }\scoring{1}\mauvaise[3]{}\scoring{2}\mauvaise[4]{ }\scoring{3}\bonne[5]{ }\scoring{4}}
+\vspace{-1.5em}
+ \end{question}
+
+}
+%---------------------------------------------------------
+\element{Produc}{
+
+\restituegroupe{ProductionEcr}
+
+}
+%----------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% fabrication des copies
+
+\exemplaire{1}{
+
+%%% debut de l'en-tête des copies : QCM
+\begin{multicols}{2}
+
+\columnseprule=1.0pt
+\noindent
+\begin{center}
+\includegraphics[scale=0.5]{Logo.png} \\
+%\Large\bf Département de langue et communication
+
+\centering\large\bf Filières SVTU  Semestre I \\ Session Ordinaire (2021/2022) \\ Module : Langue et Terminologie \end{center}
+\begin{center} Durée : 1 heure et demi. \end{center}
+
+%%%%%%%%%%%%%  Début Saisie information étudiant
+
+{
+\setlength{\parindent}{0pt}\hspace*{\fill}\AMCcode{CNE}{10}\hspace*{\fill}
+\begin{minipage}[b]{8.5cm}
+\hspace{-1ex} $\Longleftarrow $ Codez les \textbf{10 chiffres} de votre \textbf{Code National \underline{d'Etudiant} } (\tmtextbf{C.N.E.}) ou \tmtextbf{Massar} ci-contre de la \tmtextbf{gauche} vers la \tmtextbf{droite}. \textbf{Attention} à ne noircir \textbf{qu'UN chiffre par colonne}. Pour le \tmtextbf{Massar} remplacer \textbf{la première} lettre en cochant le \tmtextbf{0} de \textbf{la première colonne} et remplir obligatoirement le cadre ci-dessous :
+
+\vspace{1ex}
+\hfill\champnom{\fbox{
+\begin{minipage}{.9\linewidth}
+\vspace*{5mm}
+\tmtextbf{Nom :}
+\vspace*{.5cm}\dotfill
+
+\tmtextbf{Prénom :}
+\vspace*{.5cm}\dotfill
+
+\tmtextbf{C.N.E./Massar :}
+\vspace*{.5cm}\dotfill
+
+\tmtextbf{Local :}
+\vspace*{.2cm}\dotfill
+\tmtextbf{N° examen :}
+\dotfill
+
+\end{minipage}
+}}\hfill\vspace{-1ex}\end{minipage}\hspace*{\fill}
+
+}
+%%%%%%%%%%%%%  Fin Saisie information étudiant
+\vspace{-4mm}
+\begin{center}\em
+\begin{center} \large \bf Consignes \end{center}
+\begin{center}
+Cet examen est sous forme de QCM (Questions à Choix Multiples). Pour chaque question, il y a plusieurs propositions, veuillez \textbf{ \underline{colorier}} \textbf{\underline{une seule case}} qui correspond à la bonne réponse au \textbf{\underline{stylo noir}} ou au \textbf{\underline{stylo bleu}}.
+  En cas d'erreur, il faut simplement effacer au «\textbf{\underline{ blanco}} » mais ne pas redessiner la case.
+ \begin{minipage}[c]{.5\linewidth}
+\includegraphics[width=1\textwidth]{Att.jpg}
+\end{minipage}
+\begin{flushleft}
+- Lire le texte plusieurs fois et attentivement.
+
+- Les différentes parties de cet examen sont liées entre elles.
+
+- \large{\textbf{Restez vigilants et bon courage !}}
+
+%- Les réponses vous permettront de faire votre résumé.
+  \end{flushleft}
+  \end{center}
+
+  Responsable : \textbf{Pr. Dalila BEGHDI }
+\end{center}
+%\vspace{0.5ex}
+%----------------   Texte ---------------------------
+
+\begin{flushleft}\hrule\vspace{4mm}\begin{center}
+\large{ \textbf{Planter des arbres est envisagé depuis quelque temps comme un moyen efficace pour limiter les effets du réchauffement climatique. Encore faut-il savoir où et quels arbres planter? } }\\
+
+\begin{flushleft}
+\begin{flushleft}
+
+~ ~ ~  Les  chercheurs de l’université Rice (États-Unis) se sont attachés à identifier les arbres qui  « fonctionneraient » probablement le mieux dans la ville, tenant compte de leur capacité à absorber le dioxyde de carbone (CO2) et d'autres polluants, de leur tendance à boire de l'eau, de leur aptitude à stabiliser le paysage pendant les inondations; ou encore à fournir une canopée: (la partie la plus élevée et qui abrite le plus de vie dans une forêt tropicale humide), pour atténuer la chaleur. Ils ont ensuite identifié les sites les plus appropriés à une plantation.  \\
+
+~ ~ ~  Pour ce faire, ils ont compté sur des données recueillies au cours de la dernière décennie: des données de santé, de pollution, (etc). Puis ils ont fait appel à des analyses statistiques pour créer des cartes montrant les endroits où des plantations de masse auraient le plus fort impact,  et,  pour trouver les arbres les plus efficaces à absorber les polluants, à atténuer les inondations et à refroidir les îlots de chaleur urbains.
+\\
+~ ~ ~  C'est ainsi qu'ils ont mis au rebut* la plupart des 54 espèces indigènes. Pour n'en sélectionner que 17. Parmi eux, le chêne vert, extrêmement efficace à absorber les pollutions en tout genre. Le sycomore américain, quant à lui, excelle à contenir les inondations et à créer des zones d'ombre.  Ainsi que l'érable rouge: (arbre de la famille des acéracées et du genre Acer, aux fleurs et aux rameaux rouges, qui croît particulièrement bien dans les milieux humides.), et le chêne à feuilles de laurier. En croisant les informations relatives aux capacités de chaque essence d’arbre avec des données de santé liés à la pollution, les chercheurs montrent où il est préférable de planter des super-arbres en priorité.
+\\
+~ ~ ~  Se basant sur cette expérience, les chercheurs proposent aujourd'hui une stratégie en trois axes transposable à d'autres villes. Objectif : déterminer quels arbres sont les bons à planter, identifier les endroits où la plantation aura le plus d'impact sur la santé et sur l'environnement et s'engager avec la communauté pour faire du projet de plantation une réalité.
+\\
+
+\end{flushleft}
+
+
+\begin{flushright}
+      \underline{www.futura-sciences.com} , Décembre 2021. \end{flushright}
+
+ ~ ~ ~\\
+%\vspace*{0.2cm}
+
+\textbf{GLOSSAIRE}\\
+$^{*}$ Au rebut: se débarrasser de quelque chose qui est sans valeur ou inutilisable.\\
+%$^{*}$ Unanimité: accord complet des opinions, des intentions.\\
+
+
+\end{flushleft}
+ \end{center}
+%\vspace{0.2mm}
+\end{flushleft}
+%-----------------------------------------------------------
+%-------------------------------------------------------
+~ ~ ~\\
+
+%\vspace*{0.5cm}
+
+\begin{flushleft}\hrule\vspace{2mm}\begin{center}\large\bf QUESTIONS DE COMPRÉHENSION (4 POINTS) \end{center}
+\vspace{1mm}\hrule \end{flushleft}
+
+POUR CHAQUE QUESTION, COLORIEZ \textbf{\underline{UNE SEULE}} CASE. MERCI\\
+
+\restituegroupe{Compre}
+\melangegroupe{Compre}     % Pour ne pas mélanger
+\AMCnumero{1}
+%-------------------------------------------------------
+
+%---------------------------------------------{\mauvaise[1]{ }\scoring{0}\bonne[2]{ }\scoring{1}}---------
+%\pagebreak
+%\melangegroupe{PartieA}           % Pour mélanger
+%\restituegroupe{PartieA}
+
+\AMCnumero{1}
+%~ ~ ~\\
+%\vspace*{0.5cm}
+%\newpage
+%-------------------------------------------------------
+
+%-------------------------------------------------------
+
+
+%-------------------------------------------------------
+\begin{flushleft}\hrule\vspace{2mm}\begin{center}\large\bf QUESTIONS LANGUE ET COURS  (12 POINTS). \end{center}
+\vspace{1mm}\hrule \end{flushleft}
+%\textbf{Remplacez les connecteurs soulignés par leurs équivalents en apportant les modifications quand c'est nécessaire.}
+\restituegroupe{PartieLangue}
+\AMCnumero{1}
+
+
+%------------------------------------------------------
+
+
+%-------------------------------------------------------
+\begin{flushleft}\hrule\vspace{2mm}\begin{center}\large\bf PRODUCTION ÉCRITE  (4  POINTS) \end{center}
+\vspace{1mm}\hrule \end{flushleft}
+
+
+\restituegroupe{Produc}
+%-------------------------------------------------------
+
+
+
+
+
+
+%\AMCcleardoublepage
+
+\end{multicols}
+
+}
+
+\end{document}

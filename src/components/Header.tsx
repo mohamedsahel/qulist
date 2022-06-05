@@ -3,32 +3,29 @@ import {
   HiOutlineEye,
   HiOutlineEyeOff,
 } from 'react-icons/hi'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDB } from '~/db'
+import { Link } from 'react-router-dom'
+import { useDB, useShowLatex } from '~/db'
 import { download } from '~/utils/download'
 import { generateLatex } from '~/utils/generate-latex'
-import { getSampleExam } from '~/utils'
-import { useOpenedExam } from './OpenedExamProvider'
 import { useTranslation } from './I18nProvider'
 import LangSwitcher from './LangSwitcher'
+import useOpenedExam from '~/utils/useOpenedExam'
+import useNewExam from '~/utils/useNewExam'
 
 export default function Header(): JSX.Element {
-  const navigate = useNavigate()
   const openedExam = useOpenedExam()
+  const { showLatex, toggleShowLatex } = useShowLatex((state) => ({
+    showLatex: state.showLatex,
+    toggleShowLatex: state.toggleShowLatex,
+  }))
   const { t } = useTranslation()
+  const newExam = useNewExam()
 
-  const { newExam, exam } = useDB((state) => ({
-    newExam: state.newExam,
-    exam: state.exams.find((e) => e.id === openedExam?.openedExamId),
+  const { exam } = useDB((state) => ({
+    exam: state.exams.find((e) => e.id === openedExam?.id),
   }))
 
-  const handleNewExam = () => {
-    const exam = getSampleExam()
-    newExam(exam)
-    navigate('?exam=' + exam.id)
-  }
-
-  const HideIcon = openedExam?.showLatex ? HiOutlineEyeOff : HiOutlineEye
+  const HideIcon = showLatex ? HiOutlineEyeOff : HiOutlineEye
 
   return (
     <header className='fixed bg-indigo-500 backdrop-blur-md bg-opacity-80 z-10 inset-x-0 top-0'>
@@ -44,12 +41,8 @@ export default function Header(): JSX.Element {
           <div className='flex items-center gap-6'>
             <HideIcon
               className='text-2xl text-gray-100 cursor-pointer'
-              onClick={() => openedExam.setShowLatex(!openedExam.showLatex)}
-              title={
-                openedExam?.showLatex
-                  ? t('header.hideLatex')
-                  : t('header.showLatex')
-              }
+              onClick={toggleShowLatex}
+              title={showLatex ? t('header.hideLatex') : t('header.showLatex')}
             />
             <button
               className='flex items-center rounded-full bg-white py-3 px-5 hover:scale-105 select-none'
@@ -69,7 +62,7 @@ export default function Header(): JSX.Element {
         ) : (
           <button
             className='rounded-full bg-white py-3 px-6 hover:scale-105'
-            onClick={handleNewExam}
+            onClick={() => newExam()}
           >
             {t('header.newExam')}
           </button>

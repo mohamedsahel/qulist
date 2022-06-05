@@ -43,7 +43,7 @@ export default function ExamCard({
     >
       <div className='bg-white rounded-2xl px-6 py-5 duration-300 shadow-md'>
         <div className=''>
-          <Link to={'?exam=' + exam.id}>
+          <Link to={'/exam/' + exam.id}>
             <div className='cursor-pointer hover:text-indigo-600'>
               <h1 className='text-xl font-medium'>
                 {t('examCard.title', { module: exam.module })}

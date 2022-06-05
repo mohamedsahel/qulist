@@ -20,12 +20,13 @@ export const editExam: MethodType<DBType['editExam']> =
     }))
   }
 
-export const deleteExam: MethodType<DBType['deleteExam']> = (set) => (examId) => {
-  set((state) => ({
-    ...state,
-    exams: state.exams.filter((exam) => exam.id !== examId),
-  }))
-}
+export const deleteExam: MethodType<DBType['deleteExam']> =
+  (set) => (examId) => {
+    set((state) => ({
+      ...state,
+      exams: state.exams.filter((exam) => exam.id !== examId),
+    }))
+  }
 
 export const addQuestion: MethodType<DBType['addQuestion']> =
   (set) => (examId, question) => {
@@ -91,5 +92,17 @@ export const useDB = create<DBType>(
         name: 'qulist-storage',
       },
     ),
+  ),
+)
+
+export const useShowLatex = create<{
+  showLatex: boolean
+  toggleShowLatex: () => void
+}>(
+  devtools(
+    (set, get) => ({
+      showLatex: false,
+      toggleShowLatex: () => set({ showLatex: !get().showLatex }),
+    }),
   ),
 )

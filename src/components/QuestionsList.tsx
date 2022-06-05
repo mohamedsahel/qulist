@@ -1,7 +1,6 @@
 import { useDB } from '~/db'
 import { getNewQuestion } from '~/utils'
 import { ExamType, QuestionType } from 'types'
-import { useOpenedExam } from './OpenedExamProvider'
 import {
   DndContext,
   closestCenter,
@@ -24,20 +23,22 @@ import { createElement } from 'react'
 import shortid from 'shortid'
 import Latex from 'react-latex-next'
 import { useTranslation } from './I18nProvider'
+import useOpenedExam from '~/utils/useOpenedExam'
+import classNames from 'classnames'
 
 export default function QuestionsList() {
   const { t } = useTranslation()
-  const { openedExamId } = useOpenedExam() as any
+  const openedExam = useOpenedExam() as ExamType
   const { questions, addQuestion, editExam, editQuestion, deleteQuestion } =
     useDB((state) => ({
       questions:
-        state.exams.find((e) => e.id === openedExamId)?.questions || [],
+        state.exams.find((e) => e.id === openedExam.id)?.questions || [],
       addQuestion: (question?: QuestionType) =>
-        state.addQuestion(openedExamId, question || getNewQuestion()),
-      editExam: (data: Partial<ExamType>) => state.editExam(openedExamId, data),
+        state.addQuestion(openedExam.id, question || getNewQuestion()),
+      editExam: (data: Partial<ExamType>) => state.editExam(openedExam.id, data),
       editQuestion: (id: string, data: Partial<QuestionType>) =>
-        state.editQuestion(openedExamId, id, data),
-      deleteQuestion: (id: string) => state.deleteQuestion(openedExamId, id),
+        state.editQuestion(openedExam.id, id, data),
+      deleteQuestion: (id: string) => state.deleteQuestion(openedExam.id, id),
     }))
 
   const sensors = useSensors(
@@ -70,6 +71,8 @@ export default function QuestionsList() {
     addQuestion({ ...question, id: shortid.generate() })
   }
 
+  const animationClass = 'lg:translate-y-1/2 lg:opacity-0 group-hover:translate-y-0 group-hover:opacity-100'
+
   return (
     <div className='grid gap-10'>
       {!questions.length ? null : (
@@ -85,26 +88,30 @@ export default function QuestionsList() {
             >
               {questions.map((q, index) => (
                 <div key={q.id} className='group'>
-                  <div className='flex items-center justify-end px-4 py-1 gap-2 lg:translate-y-1/2 lg:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-400'>
+                  <div className='flex items-center justify-end px-4 py-1 gap-2'>
                     <HiDuplicate
-                      className='p-2 h-9 w-9 rounded-full text-indigo-400 cursor-pointer hover:bg-indigo-50 hover:text-indigo-500 transition-none'
+                      className={classNames('p-2 h-9 w-9 rounded-full text-indigo-400 cursor-pointer hover:bg-indigo-50 hover:text-indigo-500 duration-400', animationClass)}
                       onClick={() => duplicateQuestion(q)}
                       title={t('questionsList.titles.duplicate')}
                     />
                     <HiTrash
-                      className='p-2 h-9 w-9 rounded-full text-indigo-400 cursor-pointer hover:bg-indigo-50 hover:text-indigo-500 transition-none'
+                      className={classNames('p-2 h-9 w-9 rounded-full text-indigo-400 cursor-pointer hover:bg-indigo-50 hover:text-indigo-500 duration-500', animationClass)}
                       onClick={() => handleQuestionDeleteStart(q.id)}
                       title={t('questionsList.titles.delete')}
                     />
                     {createElement(!q.previewMode ? HiEye : HiPencil, {
                       className:
-                        'p-2 h-9 w-9 rounded-full text-indigo-400 cursor-pointer hover:bg-indigo-50 hover:text-indigo-500 transition-none',
+                        classNames('p-2 h-9 w-9 rounded-full text-indigo-400 cursor-pointer hover:bg-indigo-50 hover:text-indigo-500 duration-500', animationClass),
                       onClick: () => {
                         editQuestion(q.id, {
                           previewMode: !q.previewMode,
                         })
                       },
-                      title: t(`questionsList.titles.${q.previewMode ? 'edit' : 'preview'}`),
+                      title: t(
+                        `questionsList.titles.${
+                          q.previewMode ? 'edit' : 'preview'
+                        }`,
+                      ),
                     })}
                   </div>
                   {q.previewMode ? (
@@ -113,7 +120,7 @@ export default function QuestionsList() {
                     <QuestionEditor
                       key={q.id}
                       question={q}
-                      openedExamId={openedExamId}
+                      openedExamId={openedExam.id}
                       order={index + 1}
                       id={q.id}
                     />
