@@ -8,14 +8,14 @@ import I18nProvider from '~/components/I18nProvider'
 import translations from '~/translations'
 import Header from '~/components/Header'
 import { useRouter } from 'next/router'
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import { useShowLatex } from '~/db'
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { pathname } = useRouter()
   const { showLatex, toggleShowLatex } = useShowLatex()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0)
     if (showLatex) {
       toggleShowLatex()

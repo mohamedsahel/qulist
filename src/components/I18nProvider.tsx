@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState, useLayoutEffect } from 'react'
+import { createContext, ReactNode, useContext, useState, useEffect } from 'react'
 import { nestedValue, renderTemplate } from '~/utils'
 import Cookies from 'js-cookie'
 import { LANGUAGES } from '~/translations'
@@ -32,7 +32,7 @@ export default function I18nProvider({
     LANGUAGES[0],
   )
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setLanguage(Cookies.get('preferred-lang') as any || LANGUAGES[0])
   }, [])
 
