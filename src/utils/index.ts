@@ -22,7 +22,13 @@ export const getNewQuestion = (): QuestionType => {
   return {
     id: shortid.generate(),
     type: 'multiple_choices',
-    question: '',
+    question: [
+      '',
+      {
+        path: '',
+        scale: 1,
+      },
+    ],
     bareme: {
       wrongChoice: 0,
       correctChoice: 1,
@@ -42,14 +48,17 @@ export const escapeRegExp = (input: string): string => {
 
 export const renderTemplate = (
   template: string,
-  options?: Record<string, any>,
+  options?: Record<string, any>
 ) => {
   if (!options) {
     return template
   }
 
   return Object.keys(options).reduce((acc, option) => {
-    const regex = new RegExp('{{\\s*' + escapeRegExp(option) + '\\s*}}', 'g')
+    const regex = new RegExp(
+      '{{\\s*' + escapeRegExp(option) + '\\s*}}',
+      'g'
+    )
     return acc.replace(regex, options[option])
   }, template)
 }

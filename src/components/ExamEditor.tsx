@@ -128,7 +128,7 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
                 }}
               />
             </div>
-            <div className='py-24'>
+            <div className='py-12'>
               <QuestionsList />
             </div>
           </div>

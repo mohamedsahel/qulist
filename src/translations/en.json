@@ -3,7 +3,18 @@
     "download": "Download",
     "newExam": "New Exam",
     "hideLatex": "Hide Latex",
-    "showLatex": "Show Latex"
+    "showLatex": "Show Latex",
+    "exportExam": "Export Exam",
+    "importExam": "Import Examen"
+  },
+  "latexManual": {
+    "copy": "Copy"
+  },
+  "emptyState": {
+    "title": "Welcome back!",
+    "description": "get started by create or import new exam",
+    "or": "or",
+    "importExam": "Import Exam"
   },
   "examCard": {
     "title": "{{ module }} exam",
@@ -57,6 +68,8 @@
     "questionPlaceholder": "type question here",
     "choicePlaceholder": "choice #{{ index }}",
     "true": "True",
-    "false": "False"
+    "false": "False",
+    "ImagePlaceholder": "Image Path",
+    "ImageScaleLabel": "Scale"
   }
 }

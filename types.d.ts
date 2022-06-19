@@ -30,7 +30,13 @@ export type OptionType = {
 export type QuestionType = {
   id: string
   type: QuesttionTypesType
-  question: string
+  question: [
+    string,
+    {
+      path: string
+      scale: number
+    }?
+  ]
   choices: {
     id: string
     value: string

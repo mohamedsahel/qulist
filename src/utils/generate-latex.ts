@@ -2,9 +2,7 @@ import { ExamType, QuestionType } from 'types'
 import { FORMAT_LIST } from '~/constants'
 
 export const generateLatex = (exam: ExamType) => {
-  return `\\documentclass[${
-    getFormat(exam.format)[0]
-  }]{article}
+  return `\\documentclass[${getFormat(exam.format)[0]}]{article}
 %\\usepackage{xltxtra}
 \\usepackage[utf8x]{inputenc}
 \\usepackage[T1]{fontenc}
@@ -47,8 +45,9 @@ ewcommand{\\tmtextbf}[1]{{\\bfseries{#1}}}
 ${exam.questions
   .map(
     (question, index) =>
-      `% ---------------  Question  ${index + 1}  --------------- \n` +
-      generateQuestion(question, index + 1),
+      `% ---------------  Question  ${
+        index + 1
+      }  --------------- \n` + generateQuestion(question, index + 1)
   )
   .join('\n')}
 
@@ -151,7 +150,12 @@ En cas d'erreur, il faut simplement effacer au « \\textbf{blanco} » mais ne pa
 \\begin{multicols}{3}
 \\columnseprule=1.0pt
 % Pour mélanger
-${exam.shuffleQuestions ? '\\restituegroupe{PartieA}' : ''}
+${
+  exam.shuffleQuestions
+    ? `\\restituegroupe{PartieA}
+\\shufflegroup{PartieA}`
+    : ''
+}
 
 %\\AMCnumero{1}
 
@@ -188,7 +192,8 @@ const getFormat = (fromat: typeof FORMAT_LIST[number]) => {
 //
 const generateQuestion = (question: QuestionType, index: number) => {
   if (question.type === 'long') return getLongLatex(question, index)
-  if (question.type === 'true_false') return getTrueFalseLatex(question, index)
+  if (question.type === 'true_false')
+    return getTrueFalseLatex(question, index)
   if (question.type === 'multiple_choices')
     return getMultipleLatex(question, index)
 }
@@ -196,12 +201,24 @@ const generateQuestion = (question: QuestionType, index: number) => {
 //
 const getLongLatex = (question: QuestionType, index: number) => {
   const baremeList = question.longBareme.sort((a, b) => +a - +b)
+  const questionText = question.question[0].replace(
+    /\n/g,
+    '\n \\\\ \n'
+  )
 
   return `
   \\element{general}{
     \\vspace{1em}
     \\begin{question}[ ]{Q${String(index).padStart(3, '0')}}
-    \\textbf{${question.question.replace(/\n/g, '\n \\\\ \n')}}
+    \\textbf{${questionText}}
+    ${
+      question.question[1]?.path
+        ? `\\begin{figure}[ht]
+\\includegraphics[scale=${question.question[1]?.scale}]{${question.question[1]?.path}}
+\\centering
+\\end{figure}`
+        : ''
+    }
     \\\\
       \\restituegroupe{PartieA}
       \\AMCOpen{backgroundcol=white,lines=${question.lines},dots=True}
@@ -209,9 +226,9 @@ const getLongLatex = (question: QuestionType, index: number) => {
       ${baremeList.reduce((acc, value, index) => {
         return (
           acc +
-          `${index > 0 ? '\t\t' : '\t'} \\${index === baremeList.length - 1 ? 'correct' : 'wrong'}[${
-            index + 1
-          }]{${value}}\\scoring{${value}}\n`
+          `${index > 0 ? '\t\t' : '\t'} \\${
+            index === baremeList.length - 1 ? 'correct' : 'wrong'
+          }[${index + 1}]{${value}}\\scoring{${value}}\n`
         )
       }, '')} \t}
     \\vspace{-1.5em}
@@ -224,7 +241,15 @@ const getLongLatex = (question: QuestionType, index: number) => {
 const getTrueFalseLatex = (question: QuestionType, index: number) => {
   return `\\element{general}{
   \\begin{question}{Q${String(index).padStart(3, '0')}}
-  ${question.question.replace(/\n/g, '\n \\\\ \n')} :
+  ${question.question[0].replace(/\n/g, '\n \\\\ \n')}
+   ${
+     question.question[1]?.path
+       ? `\\begin{figure}[ht]
+\\includegraphics[scale=${question.question[1]?.scale}]{${question.question[1]?.path}}
+\\centering
+\\end{figure}`
+       : ''
+   }
     \\begin{choicescustom} \\bareme{formula=${
       question.bareme.correctChoice
     }*NBC}
@@ -239,7 +264,8 @@ const getTrueFalseLatex = (question: QuestionType, index: number) => {
 //
 const getMultipleLatex = (question: QuestionType, index: number) => {
   const isMultipleCorrect =
-    (question.choices || []).filter((choice) => choice.correct).length > 1
+    (question.choices || []).filter((choice) => choice.correct)
+      .length > 1
   const { correctChoice, wrongChoice } = question.bareme
 
   const bareme = isMultipleCorrect
@@ -248,9 +274,17 @@ const getMultipleLatex = (question: QuestionType, index: number) => {
 
   return `\\element{general}{
 \\begin{${isMultipleCorrect ? 'questionmult' : 'question'}}{Q${String(
-    index,
+    index
   ).padStart(3, '0')}}
-  ${question.question.replace(/\n/g, '\n \\\\ \n')} :
+  ${question.question[0].replace(/\n/g, '\n \\\\ \n')}
+   ${
+     question.question[1]?.path
+       ? `\\begin{figure}[ht]
+\\includegraphics[scale=${question.question[1]?.scale}]{${question.question[1]?.path}}
+\\centering
+\\end{figure}`
+       : ''
+   }
 %\\begin{${question.choicesAlignement}}{2}
     \\begin{reponses} \\bareme{${bareme}}
     ${question.choices
@@ -258,7 +292,7 @@ const getMultipleLatex = (question: QuestionType, index: number) => {
         (choice, index) =>
           `${index > 0 ? '\t\t' : '\t'} \\${
             choice.correct ? 'correct' : 'wrong'
-          } {${choice.value.replace(/\n/g, '\n \\\\ \n')}}`,
+          } {${choice.value.replace(/\n/g, '\n \\\\ \n')}}`
       )
       .join('\n')}
     \\end{reponses}

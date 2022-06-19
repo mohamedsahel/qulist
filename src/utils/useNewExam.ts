@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { ExamType } from 'types'
 import { useDB } from '~/db'
 import { getSampleExam } from '.'
 
@@ -8,14 +9,10 @@ export default function useNewExam() {
   }))
   const router = useRouter()
 
-  return (examId?: string) => {
-    const exam = getSampleExam()
+  return (exam?: ExamType) => {
+    let theExam = typeof exam === 'object' ? exam : getSampleExam()
 
-    if (examId) {
-      exam.id = examId
-    }
-
-    newExam(exam)
-    router.push('/exam/' + exam.id)
+    newExam(theExam)
+    router.push('/exam/' + theExam.id)
   }
 }
