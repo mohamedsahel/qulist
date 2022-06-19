@@ -33,7 +33,7 @@ export default function Header(): JSX.Element {
 
   const exportExam = () => {
     download(
-      `${exam?.module}-exam.json`,
+      `${exam?.module} - ${exam?.session} _export_.json`,
       JSON.stringify(exam, null, 2)
     )
   }
@@ -76,7 +76,7 @@ export default function Header(): JSX.Element {
               className='flex items-center rounded-full bg-white py-3 px-5 hover:scale-105 select-none'
               onClick={() =>
                 download(
-                  `${exam?.module} - ${exam?.session} exam.tex`,
+                  `${exam?.module} - ${exam?.session}.tex`,
                   generateLatex(exam as any)
                 )
               }>

@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import ExamEditor from '~/components/ExamEditor'
 import LatexManual from '~/components/LatexManual'
 import useOpenedExam from '~/utils/useOpenedExam'
@@ -11,6 +12,9 @@ export default function ExamId(): JSX.Element {
 
   return (
     <main className='mt-[4.4rem]'>
+      <Head>
+        <title>{`${openedExam.module} - ${openedExam.session}`}</title>
+      </Head>
       <LatexManual />
       <ExamEditor isShowing />
     </main>

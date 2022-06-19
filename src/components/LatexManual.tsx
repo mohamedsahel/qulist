@@ -1,6 +1,10 @@
 import classNames from 'classnames'
 import { createElement, useEffect, useRef, useState } from 'react'
-import { HiOutlineDuplicate, HiX } from 'react-icons/hi'
+import {
+  HiOutlineDuplicate,
+  HiOutlinePlus,
+  HiX,
+} from 'react-icons/hi'
 import { TbMathFunction } from 'react-icons/tb'
 import Latex from 'react-latex-next'
 import {
@@ -10,8 +14,10 @@ import {
   // @ts-ignore
 } from 'body-scroll-lock'
 import { useTranslation } from './I18nProvider'
-import { LATEX_MATH_EXPRESSIONS, LATEX_MATH_SYMBOLS } from '~/constants'
-
+import {
+  LATEX_MATH_EXPRESSIONS,
+  LATEX_MATH_SYMBOLS,
+} from '~/constants'
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text)
@@ -49,12 +55,12 @@ export default function LatexManual() {
         )}>
         <button
           onClick={() => setIsShowing((isShowing) => !isShowing)}
-          className='bg- absolute top-10 -left-[2.8rem]  py-2 px-3 rounded-full border  border-r-0 rounded-r-none bg-white outline-none'>
+          className='bg- absolute -top-10 right-0 z-10 sm:top-10 sm:right-auto sm:-left-[2.8rem]  py-2 px-3 rounded-full border  border-r-0 rounded-r-none bg-white outline-none'>
           {createElement(isShowing ? HiX : TbMathFunction, {
             className: 'text-xl',
           })}
         </button>
-        <div className='w-[80vw] max-w-[500px] bg-white h-full overflow-scroll rounded-lg'>
+        <div className='w-screen max-w-[500px] bg-white h-full overflow-scroll rounded-lg'>
           <div className='sticky top-0 w-full pb-4 bg-white shadow-sm z-10 p-2'>
             <div className='flex items-center justify-between border-b-2 border-b-indigo-500'>
               <span>$</span>
@@ -63,6 +69,7 @@ export default function LatexManual() {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 className='py-2 px-1 w-full  outline-none font-mono'
+                placeholder='e.g. \frac{a}{b}'
                 autoFocus
               />
               <span>$</span>
@@ -102,13 +109,18 @@ export default function LatexManual() {
                   </td>
                   <td
                     className={classNames(
-                      'flex item-center justify-between p-4 text-gray-800 '
+                      ' p-4 text-gray-800 font-mono text-ellipsis'
                     )}>
-                    <span className='font-mono'>{expression}</span>
+                    {expression}
+                  </td>
+                  <td
+                    className={classNames(
+                      'text-right  text-gray-800 pr-2'
+                    )}>
                     <button
                       onClick={() => setValue(value + expression)}
-                      className='text-sm bg-indigo-50 px-3 rounded-full hover:bg-indigo-100'>
-                      insert
+                      className='text-sm bg-indigo-50 p-1 rounded-full hover:bg-indigo-100'>
+                      <HiOutlinePlus />
                     </button>
                   </td>
                 </tr>
@@ -129,13 +141,18 @@ export default function LatexManual() {
                   </td>
                   <td
                     className={classNames(
-                      'flex item-center justify-between p-4 text-gray-800'
+                      ' p-4 text-gray-800 font-mono text-ellipsis'
                     )}>
-                    <span className='font-mono'>{expression}</span>
+                    {expression}
+                  </td>
+                  <td
+                    className={classNames(
+                      'text-right  text-gray-800 pr-2'
+                    )}>
                     <button
                       onClick={() => setValue(value + expression)}
-                      className='text-sm bg-indigo-50 px-3 rounded-full hover:bg-indigo-100'>
-                      insert
+                      className='text-sm bg-indigo-50 p-1 rounded-full hover:bg-indigo-100'>
+                      <HiOutlinePlus />
                     </button>
                   </td>
                 </tr>

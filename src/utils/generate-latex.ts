@@ -150,12 +150,8 @@ En cas d'erreur, il faut simplement effacer au « \\textbf{blanco} » mais ne pa
 \\begin{multicols}{3}
 \\columnseprule=1.0pt
 % Pour mélanger
-${
-  exam.shuffleQuestions
-    ? `\\restituegroupe{PartieA}
-\\shufflegroup{PartieA}`
-    : ''
-}
+\\restituegroupe{PartieA}
+${exam.shuffleQuestions ? `\\shufflegroup{PartieA}` : ''}
 
 %\\AMCnumero{1}
 
@@ -269,7 +265,7 @@ const getMultipleLatex = (question: QuestionType, index: number) => {
   const { correctChoice, wrongChoice } = question.bareme
 
   const bareme = isMultipleCorrect
-    ? `formula=(NB==N?NBC:NBC+NMC==N ? 0 : ${correctChoice}*NBC-${wrongChoice}*NMC),p=0,e=0,v=0`
+    ? `formula=(NB==N?NBC:NBC+NMC==N ? 0 : ${correctChoice}*NBC-${Math.abs(wrongChoice)}*NMC),p=0,e=0,v=0`
     : `formula=${correctChoice}*NBC`
 
   return `\\element{general}{

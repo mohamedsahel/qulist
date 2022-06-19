@@ -33,7 +33,7 @@ export default function ExamCard({
 
   const exportExam = () => {
     download(
-      `${exam?.module}-exam.json`,
+      `${exam.module} - ${exam.session} _export_.json`,
       JSON.stringify(exam, null, 2)
     )
   }

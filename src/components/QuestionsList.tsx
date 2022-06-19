@@ -84,7 +84,7 @@ export default function QuestionsList() {
   }
 
   const duplicateQuestion = (question: QuestionType) => {
-    addQuestion({ ...question, id: shortid.generate() })
+    addQuestion({ ...question, id: shortid.generate(), previewMode: false })
   }
 
   const animationClass =

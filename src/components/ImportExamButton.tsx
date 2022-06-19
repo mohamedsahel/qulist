@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import shortid from 'shortid'
-import { useDB } from '~/db'
 import useNewExam from '~/utils/useNewExam'
 
 export default function ImportExamButton({
@@ -19,7 +18,6 @@ export default function ImportExamButton({
       reader.onload = (e) => {
         // @ts-ignore
         const exam = JSON.parse(e.target.result)
-        console.log('exam :>> ', exam)
         newExam({ ...exam, id: shortid.generate() })
       }
       reader.readAsText(file_to_read)
