@@ -40,7 +40,7 @@ export default function Header(): JSX.Element {
 
   return (
     <header className='fixed bg-indigo-500 backdrop-blur-md bg-opacity-80 z-10 inset-x-0 top-0'>
-      <div className='py-2 inner-container max-w-screen-lg flex items-center justify-between relative'>
+      <div className='py-1 inner-container max-w-screen-lg flex items-center justify-between relative'>
         <div
           className={classNames(
             'flex items-center gap-3',

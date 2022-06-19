@@ -48,14 +48,17 @@ export default function LatexManual() {
       <div
         ref={manualContainerRef}
         className={classNames(
-          'fixed right-0 top-10 bottom-8 z-10 border rounded-lg shadow-lg bg-white',
+          'fixed right-0 top-12 bottom-3 z-10 border rounded-lg shadow-lg bg-white',
           isShowing
             ? 'translate-x-0  duration-200'
             : 'translate-x-full  duration-300'
         )}>
         <button
           onClick={() => setIsShowing((isShowing) => !isShowing)}
-          className='bg- absolute -top-10 right-0 z-10 sm:top-10 sm:right-auto sm:-left-[2.8rem]  py-2 px-3 rounded-full border  border-r-0 rounded-r-none bg-white outline-none'>
+          className={classNames(
+            'absolute  z-10 top-10 right-auto -left-[2.8rem]  py-2 px-3 rounded-full border  border-r-0 rounded-r-none bg-white outline-none',
+            isShowing && '-top-11 left-1 rounded-r-full px-3'
+          )}>
           {createElement(isShowing ? HiX : TbMathFunction, {
             className: 'text-xl',
           })}
