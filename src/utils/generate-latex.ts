@@ -224,7 +224,7 @@ const getLongLatex = (question: QuestionType, index: number) => {
           acc +
           `${index > 0 ? '\t\t' : '\t'} \\${
             index === baremeList.length - 1 ? 'correct' : 'wrong'
-          }[${index + 1}]{${value}}\\scoring{${value}}\n`
+          }[${index + 1}]{ }\\scoring{${value}}\n`
         )
       }, '')} \t}
     \\vspace{-1.5em}

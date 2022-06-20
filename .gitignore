@@ -1,6 +1,7 @@
 # npm
 node_modules
 # next.js build files
+out
 .next
 # environment variables
 .env

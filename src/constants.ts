@@ -62,7 +62,7 @@ export const LATEX_MATH_EXPRESSIONS = [
   'a_{b}',
   '\\sum_{i=1}^{n}',
   '\\prod_{n=1}^{\\infty}',
-  '\\lim_{x \\to \\infty}',
+  '\\lim_{x\\to\\infty}',
   '\\bigcup_{n=1}^{10}',
   '\\bigcap_{n=1}^{10}',
   '\\log_{a}b',
