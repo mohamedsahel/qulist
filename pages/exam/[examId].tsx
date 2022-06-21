@@ -11,7 +11,7 @@ export default function ExamId(): JSX.Element {
   }
 
   return (
-    <main className='mt-[4.4rem]'>
+    <main className='mt-[3.7rem]'>
       <Head>
         <title>{`${openedExam.module} - ${openedExam.session}`}</title>
       </Head>

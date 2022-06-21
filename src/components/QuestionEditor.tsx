@@ -21,7 +21,7 @@ import { useTranslation } from './I18nProvider'
 
 type ImageType = {
   path: string
-  scale: number
+  widthPercent: number
 }
 
 export const QuestionEditor = ({
@@ -400,14 +400,14 @@ const ImageField = ({
     setOpened(true)
     onChange({
       path: '',
-      scale: 1,
+      widthPercent: 1,
     })
   }
   const handleClose = () => {
     setOpened(false)
     onChange({
       path: '',
-      scale: 1,
+      widthPercent: 1,
     })
   }
 
@@ -432,19 +432,21 @@ const ImageField = ({
             value={image.path}
             autoFocus
           />
-          <label className=''>
-            {t('questionEditor.ImageScaleLabel')}
+          <label className='relative'>
+            {t('questionEditor.ImageWidthPercentLabel')}
             <input
               type='number'
-              placeholder='1'
+              placeholder='50'
               className={classNames(
-                'no-arrows-input w-14 ml-2 px-3 py-2 rounded-lg rounded-b-none outline-none border-b-[3px] border-indigo-400'
+                'no-arrows-input w-[72px] ml-2 px-3 py-2 rounded-lg rounded-b-none outline-none border-b-[3px] border-indigo-400'
               )}
-              value={image.scale}
+              value={image.widthPercent}
               onChange={(e) =>
-                onChange({ ...image, scale: +e.target.value })
+                // @ts-ignore
+                onChange({ ...image, widthPercent: +e.target.value || '' })
               }
             />
+            <span className='absolute right-3 top-2'>%</span>
           </label>
           <HiX
             onClick={handleClose}

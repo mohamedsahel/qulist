@@ -26,7 +26,7 @@ export const getNewQuestion = (): QuestionType => {
       '',
       {
         path: '',
-        scale: 1,
+        widthPercent: 50,
       },
     ],
     bareme: {

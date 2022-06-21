@@ -1,6 +1,6 @@
 {
   "header": {
-    "download": "Télécharger",
+    "download": "Latex",
     "newExam": "Nouvel examen",
     "hideLatex": "Cacher Latex",
     "showLatex": "Afficher Latex",
@@ -70,6 +70,6 @@
     "true": "Vrai",
     "false": "Faux",
     "ImagePlaceholder": "Chemin de l'image",
-    "ImageScaleLabel": "Echelle"
+    "ImageWidthPercentLabel": "Largeur"
   }
 }

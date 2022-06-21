@@ -34,7 +34,7 @@ export type QuestionType = {
     string,
     {
       path: string
-      scale: number
+      widthPercent: number
     }?
   ]
   choices: {

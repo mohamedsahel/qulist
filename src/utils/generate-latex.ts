@@ -14,7 +14,7 @@ export const generateLatex = (exam: ExamType) => {
 \\usepackage{tabto}
 \\usepackage{tikz}
 \\setlength\\multicolsep{3pt}
-ewcommand{\\tmtextbf}[1]{{\\bfseries{#1}}}
+\\newcommand{\\tmtextbf}[1]{{\\bfseries{#1}}}
 %
 %%%
 \\begin{document}
@@ -60,7 +60,7 @@ ${exam.questions
 
 %%% fabrication des copies
 
-\\exemplaire{10}{
+\\exemplaire{1}{
 
 %%% debut de l'en-tête des copies : QCM
 \\begin{multicols}{3}
@@ -147,11 +147,11 @@ En cas d'erreur, il faut simplement effacer au « \\textbf{blanco} » mais ne pa
 
 \\hrule\\vspace{0.2ex}
 
-\\begin{multicols}{3}
+\\begin{multicols}{2}
 \\columnseprule=1.0pt
 % Pour mélanger
 \\restituegroupe{PartieA}
-${exam.shuffleQuestions ? `\\shufflegroup{PartieA}` : ''}
+${exam.shuffleQuestions ? `\\melangegroupe{PartieA}` : ''}
 
 %\\AMCnumero{1}
 
@@ -207,23 +207,14 @@ const getLongLatex = (question: QuestionType, index: number) => {
     \\vspace{1em}
     \\begin{question}[ ]{Q${String(index).padStart(3, '0')}}
     \\textbf{${questionText}}
-    ${
-      question.question[1]?.path
-        ? `\\begin{figure}[ht]
-\\includegraphics[scale=${question.question[1]?.scale}]{${question.question[1]?.path}}
-\\centering
-\\end{figure}`
-        : ''
-    }
-    \\\\
-      \\restituegroupe{PartieA}
+    ${getGraphicInclude(question)}
       \\AMCOpen{backgroundcol=white,lines=${question.lines},dots=True}
       {
       ${baremeList.reduce((acc, value, index) => {
         return (
           acc +
           `${index > 0 ? '\t\t' : '\t'} \\${
-            index === baremeList.length - 1 ? 'correct' : 'wrong'
+            index === baremeList.length - 1 ? 'bonne' : 'mauvaise'
           }[${index + 1}]{ }\\scoring{${value}}\n`
         )
       }, '')} \t}
@@ -238,19 +229,12 @@ const getTrueFalseLatex = (question: QuestionType, index: number) => {
   return `\\element{general}{
   \\begin{question}{Q${String(index).padStart(3, '0')}}
   ${question.question[0].replace(/\n/g, '\n \\\\ \n')}
-   ${
-     question.question[1]?.path
-       ? `\\begin{figure}[ht]
-\\includegraphics[scale=${question.question[1]?.scale}]{${question.question[1]?.path}}
-\\centering
-\\end{figure}`
-       : ''
-   }
+  ${getGraphicInclude(question)}
     \\begin{choicescustom} \\bareme{formula=${
       question.bareme.correctChoice
     }*NBC}
-      \\${question.true ? 'correct' : 'wrong'}{Vrai}
-      \\${question.true ? 'wrong' : 'correct'}{Faux}
+      \\${question.true ? 'bonne' : 'mauvaise'}{Vrai}
+      \\${question.true ? 'mauvaise' : 'bonne'}{Faux}
     \\end{choicescustom}
   \\end{question}
  \\vspace{2ex}
@@ -263,39 +247,41 @@ const getMultipleLatex = (question: QuestionType, index: number) => {
     (question.choices || []).filter((choice) => choice.correct)
       .length > 1
   const { correctChoice, wrongChoice } = question.bareme
+  const questionType = isMultipleCorrect ? 'questionmult' : 'question'
 
   const bareme = isMultipleCorrect
-    ? `formula=(NB==N?NBC:NBC+NMC==N ? 0 : ${correctChoice}*NBC-${Math.abs(wrongChoice)}*NMC),p=0,e=0,v=0`
+    ? `formula=(NB==N?NBC:NBC+NMC==N ? 0 : ${correctChoice}*NBC-${Math.abs(
+        wrongChoice
+      )}*NMC),p=0,e=0,v=0`
     : `formula=${correctChoice}*NBC`
 
   return `\\element{general}{
-\\begin{${isMultipleCorrect ? 'questionmult' : 'question'}}{Q${String(
-    index
-  ).padStart(3, '0')}}
+\\begin{${questionType}}{Q${String(index).padStart(3, '0')}}
   ${question.question[0].replace(/\n/g, '\n \\\\ \n')}
-   ${
-     question.question[1]?.path
-       ? `\\begin{figure}[ht]
-\\includegraphics[scale=${question.question[1]?.scale}]{${question.question[1]?.path}}
-\\centering
-\\end{figure}`
-       : ''
-   }
+  ${getGraphicInclude(question)}
 %\\begin{${question.choicesAlignement}}{2}
     \\begin{reponses} \\bareme{${bareme}}
     ${question.choices
       ?.map(
         (choice, index) =>
           `${index > 0 ? '\t\t' : '\t'} \\${
-            choice.correct ? 'correct' : 'wrong'
+            choice.correct ? 'bonne' : 'mauvaise'
           } {${choice.value.replace(/\n/g, '\n \\\\ \n')}}`
       )
       .join('\n')}
     \\end{reponses}
 %\\end{${question.choicesAlignement}}
-  \\end{question}
+  \\end{${questionType}}
  \\vspace{2ex}
 
 }
     `
+}
+
+const getGraphicInclude = (question: QuestionType) => {
+  return question.question[1]?.path
+    ? `\\begin{center}
+\\includegraphics[width=${question.question[1]?.widthPercent / 100}\\textwidth]{${question.question[1]?.path}}
+\\end{center}`
+    : ''
 }

@@ -1,6 +1,6 @@
 {
   "header": {
-    "download": "Download",
+    "download": "Latex",
     "newExam": "New Exam",
     "hideLatex": "Hide Latex",
     "showLatex": "Show Latex",
@@ -70,6 +70,6 @@
     "true": "True",
     "false": "False",
     "ImagePlaceholder": "Image Path",
-    "ImageScaleLabel": "Scale"
+    "ImageWidthPercentLabel": "Width"
   }
 }

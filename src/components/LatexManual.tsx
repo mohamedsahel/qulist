@@ -42,7 +42,7 @@ export default function LatexManual() {
   return (
     <>
       {isShowing && (
-        <div className='fixed inset-0 bg-black bg-opacity-30 z-10 backdrop-blur-sm' />
+        <div className='fixed inset-0 bg-black bg-opacity-30 z-10 backdrop-blur-sm' onClick={() => setIsShowing(false)} />
       )}
 
       <div
