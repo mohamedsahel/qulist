@@ -12,6 +12,7 @@ export const getSampleExam = () => {
     session: 'Ordinary Autumn 2021/2022',
     duration: '60min',
     format: FORMAT_LIST[0],
+    generalText: '',
     questions: [],
     createdAt: new Date().toISOString(),
     shuffleQuestions: true,

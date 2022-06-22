@@ -49,6 +49,9 @@
     },
     "shuffle": {
       "label": "Mélanger les questions"
+    },
+    "generalText": {
+      "placeholder": "Entrer le text général"
     }
   },
   "questionsList": {

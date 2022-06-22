@@ -1,7 +1,13 @@
 import { Combobox, Switch, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { createElement, Fragment, useState } from 'react'
 import { useDB, useShowLatex } from '~/db'
-import { HiOutlineCheck, HiOutlineSelector } from 'react-icons/hi'
+import {
+  HiEye,
+  HiOutlineCheck,
+  HiOutlineSelector,
+  HiPencil,
+  HiX,
+} from 'react-icons/hi'
 import { FORMAT_LIST } from '~/constants'
 import QuestionsList from './QuestionsList'
 import { generateLatex } from '~/utils/generate-latex'
@@ -12,8 +18,14 @@ import codeStyle from '~/utils/get-code-style'
 import classNames from 'classnames'
 import { useTranslation } from './I18nProvider'
 import useOpenedExam from '~/utils/useOpenedExam'
+import ReactTextareaAutosize from 'react-textarea-autosize'
+import Latex from 'react-latex-next'
 
-export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
+export default function ExamEditor({
+  isShowing,
+}: {
+  isShowing: boolean
+}) {
   const openedExam = useOpenedExam() as any
   const { editExam, exam } = useDB((state) => ({
     exam: state.exams.find((e) => e.id === openedExam.id) as ExamType,
@@ -35,13 +47,11 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
       enterTo='opacity-100 translate-y-0'
       leave='transform duration-200 transition ease-in-out'
       leaveFrom='opacity-100 translate-y-0'
-      leaveTo='opacity-0 translate-y-[100px]'
-    >
+      leaveTo='opacity-0 translate-y-[100px]'>
       <div
         className={classNames(
-          'outer-container rounded-t-[2.5rem] min-h-[92vh] py-8 md:py-12 shadow-2xl bg-white',
-        )}
-      >
+          'outer-container rounded-t-[2.5rem] min-h-[92vh] py-8 md:py-12 shadow-2xl bg-white'
+        )}>
         {showLatex ? (
           <div className='inner-container'>
             <SyntaxHighlighter language='latex' style={codeStyle}>
@@ -61,7 +71,9 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
                   placeholder={t('examEditor.department.placeholder')}
                   className='input'
                   value={exam.department}
-                  onChange={(e) => editExam({ department: e.target.value })}
+                  onChange={(e) =>
+                    editExam({ department: e.target.value })
+                  }
                 />
               </div>
               {/* filiere */}
@@ -75,7 +87,9 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
                   placeholder={t('examEditor.filiere.placeholder')}
                   className='input'
                   value={exam.filiere}
-                  onChange={(e) => editExam({ filiere: e.target.value })}
+                  onChange={(e) =>
+                    editExam({ filiere: e.target.value })
+                  }
                 />
               </div>
               {/* session */}
@@ -89,7 +103,9 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
                   placeholder={t('examEditor.session.placeholder')}
                   className='input'
                   value={exam.session}
-                  onChange={(e) => editExam({ session: e.target.value })}
+                  onChange={(e) =>
+                    editExam({ session: e.target.value })
+                  }
                 />
               </div>
               {/* module */}
@@ -103,7 +119,9 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
                   placeholder={t('examEditor.module.placeholder')}
                   className='input'
                   value={exam.module}
-                  onChange={(e) => editExam({ module: e.target.value })}
+                  onChange={(e) =>
+                    editExam({ module: e.target.value })
+                  }
                 />
               </div>
               {/* duration */}
@@ -117,7 +135,9 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
                   placeholder={t('examEditor.duration.placeholder')}
                   className='input'
                   value={exam.duration}
-                  onChange={(e) => editExam({ duration: e.target.value })}
+                  onChange={(e) =>
+                    editExam({ duration: e.target.value })
+                  }
                 />
               </div>
               <FormatField />
@@ -125,6 +145,14 @@ export default function ExamEditor({ isShowing }: { isShowing: boolean }) {
                 enabled={exam.shuffleQuestions}
                 onChange={(enabled) => {
                   editExam({ shuffleQuestions: enabled })
+                }}
+              />
+            </div>
+            <div className='mt-16'>
+              <GeneralText
+                value={exam.generalText}
+                onChange={(value) => {
+                  editExam({ generalText: value })
                 }}
               />
             </div>
@@ -153,9 +181,10 @@ const ShuffleQuestionsSwitch = ({
         checked={enabled}
         onChange={onChange}
         className={`${enabled ? 'bg-indigo-500' : 'bg-indigo-300'}
-          relative inline-flex h-[33px] w-[65px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none mr-3`}
-      >
-        <span className='sr-only'>{t('examEditor.shuffle.label')}</span>
+          relative inline-flex h-[33px] w-[65px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none mr-3`}>
+        <span className='sr-only'>
+          {t('examEditor.shuffle.label')}
+        </span>
         <span
           aria-hidden='true'
           className={`${enabled ? 'translate-x-8' : 'translate-x-0'}
@@ -165,6 +194,53 @@ const ShuffleQuestionsSwitch = ({
       <label htmlFor='shuffle-questions-option'>
         {t('examEditor.shuffle.label')}
       </label>
+    </div>
+  )
+}
+
+const GeneralText = ({
+  value,
+  onChange,
+}: {
+  value: string
+  onChange: (value: string) => void
+}) => {
+  const [previewMode, setPreviewMode] = useState(false)
+  const { t } = useTranslation()
+
+  return (
+    <div
+      className={classNames(
+        'relative  py-4 px-6 text-lg transition-none items-center rounded-xl border-2 border-indigo-50 group',
+        previewMode ? 'bg-white' : 'bg-indigo-50'
+      )}>
+      {value && createElement(!previewMode ? HiEye : HiPencil, {
+        className: classNames(
+          'absolute -top-10 right-2 p-2 h-9 w-9 rounded-full text-indigo-400 cursor-pointer hover:bg-indigo-50 hover:text-indigo-500 duration-300',
+          'lg:translate-y-1/2 lg:opacity-0 group-hover:translate-y-0 group-hover:opacity-100'
+        ),
+        onClick: () => setPreviewMode(!previewMode),
+        title: t(
+          `questionsList.titles.${previewMode ? 'edit' : 'preview'}`
+        ),
+      })}
+      {previewMode  ? (
+        value.split('\n').map((line, i) => (
+          <div key={i} className='min-h-[2.2rem]'>
+            <Latex>{line}</Latex>
+          </div>
+        ))
+      ) : (
+        <ReactTextareaAutosize
+          className='outline-none cursor-text w-full overflow-hidden resize-none bg-transparent'
+          placeholder={t('examEditor.generalText.placeholder')}
+          onChange={(e) => onChange(e.target.value)}
+          value={value}
+          maxRows={100}
+          autoFocus
+          autoCorrect='off'
+        />
+      )}
     </div>
   )
 }
@@ -196,7 +272,7 @@ const DropdownField = ({ label, list, value, onChange }: any) => {
   const [query, setQuery] = useState('')
 
   const filtredList: string[] = list.filter((item: string) =>
-    item.toLowerCase().includes(query.toLowerCase()),
+    item.toLowerCase().includes(query.toLowerCase())
   )
 
   const { t } = useTranslation()
@@ -225,8 +301,7 @@ const DropdownField = ({ label, list, value, onChange }: any) => {
             leave='transition ease-in duration-100'
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
-            afterLeave={() => setQuery('')}
-          >
+            afterLeave={() => setQuery('')}>
             <Combobox.Options className='absolute mt-1 max-h-60 w-full overflow-auto rounded-2xl bg-white border border-indigo-100 py-1 z-10 shadow-md'>
               {filtredList.length === 0 && query !== '' ? (
                 <div className='relative cursor-default select-none py-2 px-4 text-gray-700'>
@@ -238,24 +313,23 @@ const DropdownField = ({ label, list, value, onChange }: any) => {
                     key={item}
                     className={({ active }) =>
                       `relative cursor-default select-none py-3 pl-10 pr-4 transition-none ${
-                        active ? 'bg-indigo-500 text-white' : 'text-gray-700'
+                        active
+                          ? 'bg-indigo-500 text-white'
+                          : 'text-gray-700'
                       }`
                     }
-                    value={item}
-                  >
+                    value={item}>
                     {({ selected }) => (
                       <>
                         <span
                           className={`block truncate transition-none ${
                             selected ? 'font-bold' : 'font-normal'
-                          }`}
-                        >
+                          }`}>
                           {item}
                         </span>
                         {selected ? (
                           <span
-                            className={`absolute inset-y-0 left-0 flex items-center pl-3 transition-none`}
-                          >
+                            className={`absolute inset-y-0 left-0 flex items-center pl-3 transition-none`}>
                             <HiOutlineCheck
                               className='h-5 w-5 transition-none'
                               aria-hidden='true'

@@ -58,6 +58,7 @@ export type ExamType = {
   session: string
   duration: string
   format: typeof FORMAT_LIST[number]
+  generalText: string
   questions: QuestionType[]
   shuffleQuestions: boolean
   createdAt: string

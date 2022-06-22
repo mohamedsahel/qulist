@@ -182,7 +182,7 @@ export const QuestionPreview = ({
     <div className='p-5 md:p-8 border border-indigo-100 bg-white rounded-3xl text-gray-900'>
       <p className='text-lg pb-4 text-black font-medium'>
         {question.question[0].split('\n').map((line, i) => (
-          <div key={i}>
+          <div key={i} className='min-h-[2.2rem]'>
             {i === 0 && (
               <span className='pr-2'>
                 {index}: {multi && '♣'}

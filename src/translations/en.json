@@ -49,6 +49,9 @@
     },
     "shuffle": {
       "label": "Shuffle Questions"
+    },
+    "generalText": {
+      "placeholder": "Enter general Text"
     }
   },
   "questionsList": {

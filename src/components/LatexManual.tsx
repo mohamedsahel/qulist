@@ -14,10 +14,7 @@ import {
   // @ts-ignore
 } from 'body-scroll-lock'
 import { useTranslation } from './I18nProvider'
-import {
-  LATEX_MATH_EXPRESSIONS,
-  LATEX_MATH_SYMBOLS,
-} from '~/constants'
+import { LATEX_MATH_EXPRESSIONS } from '~/constants'
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text)
@@ -42,7 +39,10 @@ export default function LatexManual() {
   return (
     <>
       {isShowing && (
-        <div className='fixed inset-0 bg-black bg-opacity-30 z-10 backdrop-blur-sm' onClick={() => setIsShowing(false)} />
+        <div
+          className='fixed inset-0 bg-black bg-opacity-30 z-10 backdrop-blur-sm'
+          onClick={() => setIsShowing(false)}
+        />
       )}
 
       <div
@@ -90,15 +90,6 @@ export default function LatexManual() {
             </button>
           </div>
           <div>
-            <h4 className='p-3 font-medium flex items-center justify-between'>
-              Math Expressions{' '}
-              <a
-                href='/latex-manual.pdf'
-                target='_blank'
-                className='text-blue-600 text-sm'>
-                more
-              </a>
-            </h4>
             <table className='w-full border rounded-lg overflow-scroll'>
               {LATEX_MATH_EXPRESSIONS.map((expression, index) => (
                 <tr
@@ -129,38 +120,12 @@ export default function LatexManual() {
                 </tr>
               ))}
             </table>
-
-            <h4 className='mt-3 p-3 font-medium'>Math Symbols</h4>
-            <table className='w-full border rounded-lg overflow-scroll'>
-              {LATEX_MATH_SYMBOLS.map((expression, index) => (
-                <tr
-                  className={classNames(
-                    'w-full',
-                    index % 2 !== 0 && 'bg-gray-50'
-                  )}
-                  key={index}>
-                  <td className='p-4 text-lg'>
-                    <Latex>{'$' + expression + '$'}</Latex>
-                  </td>
-                  <td
-                    className={classNames(
-                      ' p-4 text-gray-800 font-mono text-ellipsis'
-                    )}>
-                    {expression}
-                  </td>
-                  <td
-                    className={classNames(
-                      'text-right  text-gray-800 pr-2'
-                    )}>
-                    <button
-                      onClick={() => setValue(value + expression)}
-                      className='text-sm bg-indigo-50 p-1 rounded-full hover:bg-indigo-100'>
-                      <HiOutlinePlus />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </table>
+              <a
+                href='/latex-manual.pdf'
+                target='_blank'
+                className='text-blue-600 font-medium px-4'>
+                more
+              </a>
           </div>
         </div>
       </div>
