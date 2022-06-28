@@ -400,14 +400,14 @@ const ImageField = ({
     setOpened(true)
     onChange({
       path: '',
-      widthPercent: 1,
+      widthPercent: 50,
     })
   }
   const handleClose = () => {
     setOpened(false)
     onChange({
       path: '',
-      widthPercent: 1,
+      widthPercent: 50,
     })
   }
 

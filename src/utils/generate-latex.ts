@@ -147,10 +147,10 @@ En cas d'erreur, il faut simplement effacer au « \\textbf{blanco} » mais ne pa
 
 \\hrule\\vspace{0.2ex}
 
-\\begin{multicols}{2}
+\\begin{multicols}{3}
 \\columnseprule=1.0pt
 
-${exam.generalText ? exam.generalText : ''}
+${exam.generalText ? exam.generalText + '\n\\\\\n\\\\' : ''}
 % Pour mélanger
 \\restituegroupe{PartieA}
 ${exam.shuffleQuestions ? `\\melangegroupe{PartieA}` : ''}

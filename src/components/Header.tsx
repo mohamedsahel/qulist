@@ -76,7 +76,10 @@ export default function Header(): JSX.Element {
               className='flex items-center rounded-full bg-white py-3 px-5 hover:scale-105 select-none'
               onClick={() =>
                 download(
-                  `${exam?.module} - ${exam?.session}.tex`,
+                  `${exam?.module} ${exam?.session.replaceAll(
+                    ' ',
+                    '_'
+                  )}.tex`,
                   generateLatex(exam as any)
                 )
               }>
